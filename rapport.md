@@ -93,15 +93,13 @@ BitKeeper est un logiciel de gestion de versions décentralisé propriétaire qu
 
 Similaire au gestionnaire décentralisé, mais ne supporte pas la publication à un serveur. 
 
-
 N'est utile que dans les cas où le projet n'est modifié que sur un poste.
 
-Les logiciels décentralisés peuvent être utilisés seulement localement.
-
+Les logiciels de gestion de versions locaux ne sont pas fait pour partager, mais permetent la plupart du temps de naviguer avec les branches et les consignations.
 
 ---
 
-#### Git et son fonctionnement de dépôt
+#### Git
 
 Git est un logiciel libre écrit par Linus Torvalds et publié sous la license GNU GPL v2 en avril 2005.
 Ce logiciel a été conçu pour ne pas avoir besoin d'un serveur centralisé afin de gérer les modifications d'une arborescence visant un support de développement non-linéaire.
