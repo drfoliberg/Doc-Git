@@ -10,7 +10,7 @@
 
 ---
 
-## Table des matières {.bg-primary}
+## Table des matières
 
 1. [Qu'est qu'un logiciel de gestion de versions ?](#whatis)
     * [Centralisé](#centralise)
@@ -42,7 +42,7 @@
         * [Changer de branche]/(#checkout)
         * [Fusionner des branches]/(#merge)
 6. [Branches distantes]/(#online)
-    * [Ajouter un dépôt distant](#remotes)
+    * [Ajouter un dépôt distant]/(#remotes)
     * [Pousser]/(#push)
     * [Synchroniser]/(#pull)
     * [Effacer une branche distante]/(#delete-branch)
