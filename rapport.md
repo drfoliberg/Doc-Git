@@ -5,12 +5,12 @@
 #### Document basé sur la [documentation officielle Git](http://git-scm.com/doc), la [documentation Atlassin](https://www.atlassian.com/fr/git/tutorial/) et [l'encyclopédie libre Wikipédia](https://wikipedia.org) en Mars 2014
 
 #### Publié sous la licence Creative Commons CC BY-NC-SA 4.0 
-<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr"><img alt="Licence Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr"><img alt="Licence Creative Commons" style="border-width:0" src="img/by-nc-sa.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">
 ###### Version du document: 0.0.3
 
 ---
 
-## Table des matières
+## Table des matières {.bg-primary}
 
 1. [Qu'est qu'un logiciel de gestion de versions ?](#whatis)
     * [Centralisé](#centralise)
@@ -83,12 +83,14 @@ Toutes les opérations relatives aux branches et aux consignations ne peuvent ê
 Dans le cas d'une panne, les utilisateurs **ne peuvent pas** aller chercher d'anciennes modifications ni en enregistrer de nouvelles car ils n'ont que leur version courante des fichiers.
 
 
-![Schémas d'un workflow centralisé](img/centralise.gif)
+![Schémas d'un workflow centralisé](img/centralise.png){.center-block}
 
 
 **Exemple de logiciels**
 
 Subversion (SVN) de la fondation Apache et Team Foundation Server (TFS) de Microsoft sont de bons exemples de logiciels de gestion de versions centralisés encore beaucoup utilisés.
+
+
 
 ---
 
@@ -112,7 +114,7 @@ Le développeur de droite pousse lui aussi ses modifications sur son dépôt pub
 L'intégrateur a alors le choix d'accepter les [demandes de synchronisation](#pull-request).
 Une fois les changements intégrés au dépôt canonique, les développeurs peuvent synchroniser leur dépôt, mais ne sont pas obligés pour continuer leur développement immédiat.
 
-![Schémas d'un workflow intégrateur](img/decentraliseintegrateur.gif)
+![Schémas d'un workflow intégrateur](img/integrateur.png){.center-block}
 
 
 **Exemple de logiciels**
@@ -188,7 +190,9 @@ Prenons l'exemple simple de Alice et Bob voulant travailler sur un projet ensemb
 
 Il va avoir trois dépôts au total; un sur le poste de chaque développeurs et un sur le serveur de [GitHub](https://github.com).
 
-Alice et Bob auront les deux accès en écriture au répertoire canonique car ils se font confiance.
+![schéma centralisé](img/canonique.png){.center-block}
+
+Alice et Bob auront les deux accès en écriture au répertoire canonique car ils se font confiance. Leur processus de développement imite en partie ce qu'une équipe avec un gestionnaire de versions centralisé.
 
 Alice fait des modifications et la consigne, cette dernière n'est disponible que sur son poste. Alice doit pousser vers le répertoire canonique sa consignation.
 
@@ -198,7 +202,6 @@ Après un certain nombre de consignations, Bob décide de pousser vers le dépô
 C'est une étape assez simple et Git va s'occuper de [fusionner](#merge) les modifications faites sur la branche distante vers la branche courante en créant une nouvelle consignation localement.
 Il suffit ensuite de [pousser](#push) au dépôt canonique les dernières modifications.
 
-![schéma centralisé](img/canonique.gif)
 
 ---
 
@@ -211,14 +214,14 @@ Le site GitHub fournit cette fonctionnalité et c'est à la base du processus de
 
 Alice et Bob acceptent la demande et c'est le dépôt canonique qui se [synchronisera](#pull) avec le dépôt public de Ève.
 
-![schéma pull request](img/canoniqueeve.gif)
+![schéma pull request](img/canoniqueeve.png){.center-block}
 
 
 En effet, c'est avec Git que le système d'opération Linux est développé et peut bénéficier d'un modèle de développement "dictateur bienveillant".
 Ce modèle permet à plusieurs lieutenants ou responsables de recevoir des modifications sur des modules qui leurs sont attribués et d'envoyer au dictateur bienveillant pour l'intégration finale.
 
 
-![Schémas d'un workflow dictateur](img/decentralisedictateur.gif)
+![Schémas d'un workflow dictateur](img/dictateur.png){.center-block}
 
 ---
 
@@ -227,13 +230,21 @@ Ce modèle permet à plusieurs lieutenants ou responsables de recevoir des modif
 
 ##### `Dépôt canonique` {#canonique} 
 Un dépôt canonique est un dépôt où seul des personnes de confiances ont accès en écriture et tous les autres développeurs prennent leur code à jour en lecture. C'est le dépôt "officiel" du projet.
-    
+   
 ---
 
-[Retour à la page d'acceuil](index.html)
+[Télécharger cette page en format PDF](pdf/lastest.pdf)
+
+[Me contacter](mailto:drfoliberg@gmail.com)
+
+Sources disponibles sur [GitHub](https://github.com/drfoliberg/Doc-Git)
+   
+---
+
+[Retour à la page d'accueil](index.html)
 
 ---
 
-<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr"><img alt="Licence Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Rapport technique sur Git</span> de <a xmlns:cc="http://creativecommons.org/ns#" href="https://github.com/drfoliberg" property="cc:attributionName" rel="cc:attributionURL">Justin Duplessis</a> est mis à disposition selon les termes de la <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr">licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 4.0 International</a>.
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr"><img alt="Licence Creative Commons" style="border-width:0" src="img/by-nc-sa.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">
 
 ---
