@@ -6,7 +6,7 @@
 
 #### Publié sous la licence Creative Commons CC BY-NC-SA 4.0 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr"><img alt="Licence Creative Commons" style="border-width:0" src="img/by-nc-sa.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">
-###### Version du document: 0.0.4
+###### Version du document: 0.0.5
 
 ---
 
@@ -36,14 +36,16 @@
         * [Cloner]/(#clone)
         * [Créer]/(#init)
     * [Travailler avec la zone d'index]/(#index)
+        * [Ignorer des fichiers]/(#gitignore)
+        * [Consulter la zone d'index]/(#status)
         * [Ajouter des modifications à l'index]/(#add)
         * [Enlever des modifications de l'index]/(#reset)
     * [Travailler avec les instantanés]/(#commits)
         * [Enregistrer les modifications de l'index]/(#commit)
+        * [Consulter les instantanés]/(#log)
         * [Annuler les modifications publiques]/(#revert)
         * [Obtenir une ancienne version]/(#checkout-commit)
         * [Comparer les modifications]/(#diff)
-        * [Ignorer des fichiers]/(#gitignore)
     * [Travailler avec les branches]/(#branches)
         * [Créer une nouvelle branche]/(#branch)
         * [Changer de branche]/(#checkout)
@@ -237,23 +239,45 @@ Nous aborderons les états suivants:
 
 ### Répertoire de travail {#edited}
 
-La zone de travail est l'arborescence des fichiers du projet qui sont directement accessible sur le disque par l'utilisateur. Comme le dit le nom, cette zone sert à travailler sur les fichiers, mais les modifications faites ne sont pas encore déclarées à Gité
+La zone de travail est l'arborescence des fichiers du projet qui sont directement accessibles sur le disque par l'utilisateur.
 
-Les modifications faites dans la zone de travail ne seront pas inclus dans une consignation.
+Les modifications faites dans la zone de travail ne seront pas inclus lors une [consignation](#commit). Afin d'enregistrer des modifications faites dans le répertoire de travail, l'utilisateur doit [ajouter à la zone d'index](#add) ses changements.
 
-Lorsque le dépôt local va être synchronisé ou va changer de branche, Git vérifie si des modifications sont présentes dans le répertoire de travail et empêcher l'utilisateur de continuer si tel est le cas.
+Lorsque le dépôt local va être [synchronisé](#pull) ou va changer de branche, Git vérifie si des modifications sont présentes dans le répertoire de travail et empêcher l'utilisateur de continuer si tel est le cas.
 
-Afin d'enregistrer des modifications faites dans le répertoire de travail, l'utilisateur doit [ajouter à la zone d'index](#add) ses changements.
-
-**N.B.** En anglais, le répertoire de travail a comme nom **working directory**.
+**N.B.** En anglais, le répertoire de travail a comme nom _working directory_.
 
 ---
 
-### Zone d'index / Staging {#stage}
+### Zone d'index {#stage}
+
+L'index contient ce qui sera consigné lors de la prochaine consignation.
+L'index une zone dynamique, car l'utilisateur peut facilement modifier cette zone sans devoir faire des changements à un historique.
+
+Il faut [ajouter](#add) à l'index les fichiers de la zone de travaille dont nous voulons inclure les modifications.
+
+En tout temps, il est facile de [consulter l'index](#status) afin de vérifier quels fichiers sont dans l'index.
+
+Il est également possible d'[enlever des fichiers de l'index](#reset). 
+
+**N.B.** En anglais, l'index a **aussi** comme nom _staging_.
 
 ---
 
-### Méta-données / Commit {#commited}
+### Méta-données {#commited}
+
+Les métas-données sont en fait une structure d'objets compressés du dépôt local contenant l'historique des consignations et ne sont pas directement accessibles par l'utilisateur.
+
+L'historique des consignations peut toutefois être consulté avec une [commande](#log) qui analyse les métas-données.
+
+Tout changement à cette zone passe par les branches ou les instantanés et affecte l'historique.
+
+L'utilisateur peut avec une consignation, [ajouter l'index](#commit) aux métas-données.
+
+**N.B** L'ajout d'un instantané aux métas-données ne fait qu'ajouter **localement** les modifications. 
+
+Il faut [pousser](#push) les métas-données du dépôt courant à un autre afin de rendre public la création de consignations ou de branches.
+
 
 ---
 
