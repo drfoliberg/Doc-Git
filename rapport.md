@@ -264,11 +264,11 @@ Un dépôt canonique est un dépôt où seul des personnes de confiances ont acc
    
 ---
 
-[Télécharger cette page en format PDF](pdf/lastest.pdf)
+[<i class="fa fa-download"></i>Télécharger cette page en format PDF](pdf/lastest.pdf)
 
-[Contacter l'auteur](mailto:duplessisjustin1@gmail.com)
+[<i class="fa fa-envelope-o"></i>Contacter l'auteur](mailto:duplessisjustin1@gmail.com)
 
-Sources disponibles sur [GitHub](https://github.com/drfoliberg/Doc-Git)
+Sources disponibles sur [GitHub<i class="fa fa-github"></i>](https://github.com/drfoliberg/Doc-Git)
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr"><img alt="Licence Creative Commons" style="border-width:0" src="img/by-nc-sa.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">
 
