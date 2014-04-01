@@ -102,7 +102,7 @@ Subversion (SVN) de la fondation Apache et Team Foundation Server (TFS) de Micro
 
 Un gestionnaire de versions décentralisé **ne requiert pas** de serveur central car chaque client a l'entièreté des données relatives à l'arborescence ainsi que ses modifications.
 
-Toutes les opérations relatives aux consignations et aux branches sont traités localement par le gestionnaire de versions installé. Ensuite, le développeur peut décider de publier sur un [dépôt canonique](#canonique) ses modifications.
+Toutes les opérations relatives aux consignations et aux branches sont traités localement par le gestionnaire de versions installé. Ensuite, le développeur peut décider de publier sur un [<i class="fa fa-share"></i>dépôt canonique](#canonique) ses modifications.
 
 Il est à noter que le dépôt canonique et les dépôts clients vont avoir exactement les mêmes données une fois synchronisés.
 Si le dépôt canonique est inaccessible, les utilisateurs peuvent tout de même enregistrer des modifications sur leur poste et les envoyer plus tard au dépôt.
@@ -110,7 +110,7 @@ Si le dépôt canonique est inaccessible, les utilisateurs peuvent tout de même
 Les gestionnaires de versions décentralisés permettent un **développement hiérarchique**, une technique qui est beaucoup plus difficile à atteindre avec un logiciel centralisé.
 
 Voici un exemple de 3 développeurs qui [poussent](#push) chacun sur un dépôt public des modifications de codes.
-Le développeur du milieu décide d'intégrer les changements du développeur de gauche dans son dépôt public avec une [synchronisation](#pull) et demandent à un intégrateur de synchroniser le [dépôt canonique](#canonique) avec les modifications de son dépôt public.
+Le développeur du milieu décide d'intégrer les changements du développeur de gauche dans son dépôt public avec une [synchronisation](#pull) et demandent à un intégrateur de synchroniser le [<i class="fa fa-share"></i>dépôt canonique](#canonique) avec les modifications de son dépôt public.
 Le développeur de droite pousse lui aussi ses modifications sur son dépôt public et demande à l'intégrateur d'inclure ses changements comme l'autre développeur.
 L'intégrateur a alors le choix d'accepter les [demandes de synchronisation](#pull-request).
 Une fois les changements intégrés au dépôt canonique, les développeurs peuvent synchroniser leur dépôt, mais ne sont pas obligés pour continuer leur développement immédiat.
@@ -173,7 +173,7 @@ Git va empêcher l'utilisateur de changer de branche ou de consignation courante
 **Erreurs matérielle**
 
 Les consignations sont enregistrées sous forme d'objets et pointent vers d'autres objets tels que des objets de hiérarchie ou de stockage.
-À l'enregistrement des objets, une somme [SHA1](http://fr.wikipedia.org/wiki/SHA-1) est calculé et est le nom du fichier de l'objet.
+À l'enregistrement des objets, une somme [<i class="fa fa-external-link"></i>SHA1](http://fr.wikipedia.org/wiki/SHA-1) est calculé et est le nom du fichier de l'objet.
 
 Étant donné de la nature de l'algorithme SHA1, il est très rapide et facile pour Git de vérifier l'intégrité de chaque objet.
 Si un octet change dans l'historique ou dans un fichier (n'importe quel objet en fait), Git va aviser d'une corruption.
@@ -185,9 +185,9 @@ En même temps, ces clés SHA1 servent de pointeurs pour d'autres objets.
 ### Communication entre les dépôts {#github}
 
 Dans la plupart des cas, une équipe de développement n'aura pas besoin d'un serveur Git car de nombreux services existants remplissent la tâche.
-Prenons l'exemple simple de Alice et Bob voulant travailler sur un projet ensemble sur le site [GitHub](https://github.com) qui hébergera le [dépôt canonique](#canonique).
+Prenons l'exemple simple de Alice et Bob voulant travailler sur un projet ensemble sur le site [<i class="fa fa-external-link"></i>GitHub](https://github.com) qui hébergera le [<i class="fa fa-share"></i>dépôt canonique](#canonique).
 
-Il va avoir trois dépôts au total; un sur le poste de chaque développeurs et un sur le serveur de [GitHub](https://github.com).
+Il va avoir trois dépôts au total; un sur le poste de chaque développeurs et un sur le serveur de GitHub.
 
 ![schéma centralisé](img/canonique.png){.center-block}
 
@@ -266,16 +266,14 @@ Un dépôt canonique est un dépôt où seul des personnes de confiances ont acc
 
 [Télécharger cette page en format PDF](pdf/lastest.pdf)
 
-[Me contacter](mailto:drfoliberg@gmail.com)
+[Contacter l'auteur](mailto:duplessisjustin1@gmail.com)
 
 Sources disponibles sur [GitHub](https://github.com/drfoliberg/Doc-Git)
-   
+
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr"><img alt="Licence Creative Commons" style="border-width:0" src="img/by-nc-sa.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">
+
 ---
 
 [Retour à la page d'accueil](index.html)
-
----
-
-<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr"><img alt="Licence Creative Commons" style="border-width:0" src="img/by-nc-sa.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">
 
 ---
