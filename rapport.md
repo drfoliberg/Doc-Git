@@ -6,9 +6,15 @@
 
 #### Publié sous la licence Creative Commons CC BY-NC-SA 4.0 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr"><img alt="Licence Creative Commons" style="border-width:0" src="img/by-nc-sa.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">
-###### Version du document: 0.0.3
+###### Version du document: 0.0.4
 
 ---
+
+### Objectif du document
+
+* Présenter les différences entre les logiciels de versions centralisés et décentralisés
+* Présenter les différents processus de développement possibles.
+* Présenter une utilisation poussée de logiciel Git
 
 ## Table des matières
 
@@ -17,22 +23,23 @@
     * [Décentralisé](#decentralise)
     * [Local](#local)
 2. [Fonctionnement de Git](#git)
-    * [Les instantanés VS différences](#snapshots)
+    * [Les instantanés](#snapshots)
     * [Contrôle de l'intégrité](#hash)
     * [Communication entre les dépôts](#github)
     * [Développement hiérarchique](#dictator)
-3. [Les trois états des fichiers]/(#stages)
-    * [Répertoire de travail / Working directory]/(#edited)
-    * [Zone d'index / Staging]/(#staged)
-    * [Méta-données / Commit]/(#commited)
-5. [Utilisation de Git]/(#usage)
+3. [Les trois états des fichiers](#stages)
+    * [Répertoire de travail](#edited)
+    * [Zone d'index](#stage)
+    * [Méta-données](#commited)
+4. [Utilisation de Git]/(#usage)
     * [Initialiser un environnement]/(#initclone)
         * [Cloner]/(#clone)
         * [Créer]/(#init)
+    * [Travailler avec la zone d'index]/(#index)
+        * [Ajouter des modifications à l'index]/(#add)
+        * [Enlever des modifications de l'index]/(#reset)
     * [Travailler avec les instantanés]/(#commits)
-        * [Ajouter des fichiers aux modifications]/(#stage)
-        * [Enlever des modifications locales]/(#unstage)
-        * [Enregistrer les modifications]/(#commit)
+        * [Enregistrer les modifications de l'index]/(#commit)
         * [Annuler les modifications publiques]/(#revert)
         * [Obtenir une ancienne version]/(#checkout-commit)
         * [Comparer les modifications]/(#diff)
@@ -41,14 +48,17 @@
         * [Créer une nouvelle branche]/(#branch)
         * [Changer de branche]/(#checkout)
         * [Fusionner des branches]/(#merge)
-6. [Branches distantes]/(#online)
+5. [Branches distantes]/(#online)
     * [Ajouter un dépôt distant]/(#remotes)
     * [Pousser]/(#push)
     * [Synchroniser]/(#pull)
     * [Effacer une branche distante]/(#delete-branch)
-7. [Gérer les problèmes dans le code]/(#debug)
+6. [Gérer les problèmes dans le code]/(#debug)
     * [Annotations]/(#blame)
     * [Recherche dichotomique d'un bogue]/(#bisect)
+7. [Outils supplémentaires]
+    * [Interfaces graphiques]/(#gitk)
+    * [Hébergement Git]/(#github)
 
 ---
     
@@ -68,7 +78,6 @@ Il existe principalement 3 types de gestionnaires de versions:
 
 La majeure différence des gestionnaire de versions se fait sur la manière donc les clients enregistrent leurs modifications dans le dépôt et peut fortement affecter le processus de développement si le gestionnaire de versions n'est pas adapté.
 
-
 Ce document a pour buts de démontrer l'utilisation du gestionnaire de versions Git et comparer en quoi certaines alternatives peuvent handicaper le processus de développement.
 
 ---
@@ -76,21 +85,16 @@ Ce document a pour buts de démontrer l'utilisation du gestionnaire de versions 
 ### Centralisé {#centralise}
 Un logiciel de gestion de versions centralisé enregistre le dépôt à un seul endroit et les client n'ont que le minimum sur leur poste.
 
-
 Un gestionnaire de versions centralisé **requiert donc un serveur** qui a comme rôle de conserver l'arborescence et ses modifications et d'interagir avec les clients afin d'enregistrer de nouvelles modifications et distribuer l'arborescence.
 
 Toutes les opérations relatives aux branches et aux consignations ne peuvent être enregistrées qu'avec une connexion au serveur.
 Dans le cas d'une panne, les utilisateurs **ne peuvent pas** aller chercher d'anciennes modifications ni en enregistrer de nouvelles car ils n'ont que leur version courante des fichiers.
 
-
 ![Schémas d'un workflow centralisé](img/centralise.png){.center-block}
-
 
 **Exemple de logiciels**
 
 Subversion (SVN) de la fondation Apache et Team Foundation Server (TFS) de Microsoft sont de bons exemples de logiciels de gestion de versions centralisés encore beaucoup utilisés.
-
-
 
 ---
 
@@ -100,13 +104,10 @@ Un gestionnaire de versions décentralisé **ne requiert pas** de serveur centra
 
 Toutes les opérations relatives aux consignations et aux branches sont traités localement par le gestionnaire de versions installé. Ensuite, le développeur peut décider de publier sur un [dépôt canonique](#canonique) ses modifications.
 
-
 Il est à noter que le dépôt canonique et les dépôts clients vont avoir exactement les mêmes données une fois synchronisés.
 Si le dépôt canonique est inaccessible, les utilisateurs peuvent tout de même enregistrer des modifications sur leur poste et les envoyer plus tard au dépôt.
 
-
 Les gestionnaires de versions décentralisés permettent un **développement hiérarchique**, une technique qui est beaucoup plus difficile à atteindre avec un logiciel centralisé.
-
 
 Voici un exemple de 3 développeurs qui [poussent](#push) chacun sur un dépôt public des modifications de codes.
 Le développeur du milieu décide d'intégrer les changements du développeur de gauche dans son dépôt public avec une [synchronisation](#pull) et demandent à un intégrateur de synchroniser le [dépôt canonique](#canonique) avec les modifications de son dépôt public.
@@ -115,7 +116,6 @@ L'intégrateur a alors le choix d'accepter les [demandes de synchronisation](#pu
 Une fois les changements intégrés au dépôt canonique, les développeurs peuvent synchroniser leur dépôt, mais ne sont pas obligés pour continuer leur développement immédiat.
 
 ![Schémas d'un workflow intégrateur](img/integrateur.png){.center-block}
-
 
 **Exemple de logiciels**
 
@@ -150,7 +150,6 @@ C'est un logiciel de versions de contrôles qui plait maintenant aux petits comm
 
 Lorsqu'un utilisateur [consigne](#commit) son code, Git enregistre un instantané du répertoire. C'est à dire qu'une copie de chaque fichier est effectuée.
 Bien entendu, les fichiers n'ayant pas changé sont enregistrés sous la forme d'un pointeur au même fichier de la consignation précédente.
-
 
 La synchronisation ou la publication d'un dépôt envoie en fait l'instantané de chaque consignations à envoyer compressées sous forme d'objets.
 Git est donc dépendant de l'historique des fichiers, mais pas autant que certains gestionnaires de versions qui utilisent la différence entre chaque fichier à chaque consignation afin d'essayer d'optimiser l'espace disque requis.
@@ -202,7 +201,6 @@ Après un certain nombre de consignations, Bob décide de pousser vers le dépô
 C'est une étape assez simple et Git va s'occuper de [fusionner](#merge) les modifications faites sur la branche distante vers la branche courante en créant une nouvelle consignation localement.
 Il suffit ensuite de [pousser](#push) au dépôt canonique les dernières modifications.
 
-
 ---
 
 ### Développement hiérarchique {#dictator}
@@ -214,17 +212,50 @@ Le site GitHub fournit cette fonctionnalité et c'est à la base du processus de
 
 Alice et Bob acceptent la demande et c'est le dépôt canonique qui se [synchronisera](#pull) avec le dépôt public de Ève.
 
-![schéma pull request](img/canoniqueeve.png){.center-block}
-
+![Schémas pull request](img/canoniqueeve.png){.center-block}
 
 En effet, c'est avec Git que le système d'opération Linux est développé et peut bénéficier d'un modèle de développement "dictateur bienveillant".
 Ce modèle permet à plusieurs lieutenants ou responsables de recevoir des modifications sur des modules qui leurs sont attribués et d'envoyer au dictateur bienveillant pour l'intégration finale.
-
 
 ![Schémas d'un workflow dictateur](img/dictateur.png){.center-block}
 
 ---
 
+## 3. Les trois états d'un fichier {#stages}
+
+Afin de commencer à utiliser Git et d'enregistrer des modifications, il faut s'assurer de bien comprendre les 3 états des fichiers que considère le logiciel Git.
+
+Les états des fichiers suivent bien évidemment le cours des modifications et des consignations faites par l'utilisateur.
+
+Nous aborderons les états suivants:
+
+* Répertoire de travail
+* Zone d'index
+* Méta-données
+
+---
+
+### Répertoire de travail {#edited}
+
+La zone de travail est l'arborescence des fichiers du projet qui sont directement accessible sur le disque par l'utilisateur. Comme le dit le nom, cette zone sert à travailler sur les fichiers, mais les modifications faites ne sont pas encore déclarées à Gité
+
+Les modifications faites dans la zone de travail ne seront pas inclus dans une consignation.
+
+Lorsque le dépôt local va être synchronisé ou va changer de branche, Git vérifie si des modifications sont présentes dans le répertoire de travail et empêcher l'utilisateur de continuer si tel est le cas.
+
+Afin d'enregistrer des modifications faites dans le répertoire de travail, l'utilisateur doit [ajouter à la zone d'index](#add) ses changements.
+
+**N.B.** En anglais, le répertoire de travail a comme nom **working directory**.
+
+---
+
+### Zone d'index / Staging {#stage}
+
+---
+
+### Méta-données / Commit {#commited}
+
+---
 
 ## Glossaire
 
