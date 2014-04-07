@@ -1,4 +1,4 @@
-﻿# Présentation d'un rapport technique sur le logiciel de gestion de versions décentralisé Git
+﻿﻿# Présentation d'un rapport technique sur le logiciel de gestion de versions décentralisé Git
 
 ### Par Justin Duplessis
 
@@ -6,7 +6,7 @@
 
 #### Publié sous la licence Creative Commons CC BY-NC-SA 4.0 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr"><img alt="Licence Creative Commons" style="border-width:0" src="img/by-nc-sa.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">
-###### Version du document: 0.0.5
+###### Version du document: 0.0.6
 
 ---
 
@@ -31,15 +31,15 @@
     * [Répertoire de travail](#edited)
     * [Zone d'index](#stage)
     * [Méta-données](#commited)
-4. [Utilisation de Git]/(#usage)
-    * [Initialiser un environnement]/(#initclone)
-        * [Cloner]/(#clone)
-        * [Créer]/(#init)
-    * [Travailler avec la zone d'index]/(#index)
-        * [Ignorer des fichiers]/(#gitignore)
-        * [Consulter la zone d'index]/(#status)
-        * [Ajouter des modifications à l'index]/(#add)
-        * [Enlever des modifications de l'index]/(#reset)
+4. [Utilisation de Git](#usage)
+    * [Initialiser un environnement](#initclone)
+        * [Cloner](#clone)
+        * [Créer](#init)
+    * [Travailler avec la zone d'index](#index)
+        * [Ignorer des fichiers](#gitignore)
+        * [Consulter la zone d'index](#status)
+        * [Ajouter des modifications à l'index](#add)
+        * [Enlever des modifications de l'index](#reset)
     * [Travailler avec les instantanés]/(#commits)
         * [Enregistrer les modifications de l'index]/(#commit)
         * [Consulter les instantanés]/(#log)
@@ -104,7 +104,7 @@ Subversion (SVN) de la fondation Apache et Team Foundation Server (TFS) de Micro
 
 Un gestionnaire de versions décentralisé **ne requiert pas** de serveur central car chaque client a l'entièreté des données relatives à l'arborescence ainsi que ses modifications.
 
-Toutes les opérations relatives aux consignations et aux branches sont traités localement par le gestionnaire de versions installé. Ensuite, le développeur peut décider de publier sur un [<i class="fa fa-share"></i>dépôt canonique](#canonique) ses modifications.
+Toutes les opérations relatives aux consignations et aux branches sont traités localement par le gestionnaire de versions installé. Ensuite, le développeur peut décider de publier sur un [<span class="glyphicon glyphicon-share-alt"></span>dépôt canonique](#canonique) ses modifications.
 
 Il est à noter que le dépôt canonique et les dépôts clients vont avoir exactement les mêmes données une fois synchronisés.
 Si le dépôt canonique est inaccessible, les utilisateurs peuvent tout de même enregistrer des modifications sur leur poste et les envoyer plus tard au dépôt.
@@ -112,7 +112,7 @@ Si le dépôt canonique est inaccessible, les utilisateurs peuvent tout de même
 Les gestionnaires de versions décentralisés permettent un **développement hiérarchique**, une technique qui est beaucoup plus difficile à atteindre avec un logiciel centralisé.
 
 Voici un exemple de 3 développeurs qui [poussent](#push) chacun sur un dépôt public des modifications de codes.
-Le développeur du milieu décide d'intégrer les changements du développeur de gauche dans son dépôt public avec une [synchronisation](#pull) et demandent à un intégrateur de synchroniser le [<i class="fa fa-share"></i>dépôt canonique](#canonique) avec les modifications de son dépôt public.
+Le développeur du milieu décide d'intégrer les changements du développeur de gauche dans son dépôt public avec une [synchronisation](#pull) et demandent à un intégrateur de synchroniser le [<span class="glyphicon glyphicon-share-alt"></span>dépôt canonique](#canonique) avec les modifications de son dépôt public.
 Le développeur de droite pousse lui aussi ses modifications sur son dépôt public et demande à l'intégrateur d'inclure ses changements comme l'autre développeur.
 L'intégrateur a alors le choix d'accepter les [demandes de synchronisation](#pull-request).
 Une fois les changements intégrés au dépôt canonique, les développeurs peuvent synchroniser leur dépôt, mais ne sont pas obligés pour continuer leur développement immédiat.
@@ -175,7 +175,7 @@ Git va empêcher l'utilisateur de changer de branche ou de consignation courante
 **Erreurs matérielle**
 
 Les consignations sont enregistrées sous forme d'objets et pointent vers d'autres objets tels que des objets de hiérarchie ou de stockage.
-À l'enregistrement des objets, une somme [<i class="fa fa-external-link"></i>SHA1](http://fr.wikipedia.org/wiki/SHA-1) est calculé et est le nom du fichier de l'objet.
+À l'enregistrement des objets, une somme [<span class="glyphicon glyphicon-share"></span>SHA1](http://fr.wikipedia.org/wiki/SHA-1) est calculé et est le nom du fichier de l'objet.
 
 Étant donné de la nature de l'algorithme SHA1, il est très rapide et facile pour Git de vérifier l'intégrité de chaque objet.
 Si un octet change dans l'historique ou dans un fichier (n'importe quel objet en fait), Git va aviser d'une corruption.
@@ -187,7 +187,7 @@ En même temps, ces clés SHA1 servent de pointeurs pour d'autres objets.
 ### Communication entre les dépôts {#github}
 
 Dans la plupart des cas, une équipe de développement n'aura pas besoin d'un serveur Git car de nombreux services existants remplissent la tâche.
-Prenons l'exemple simple de Alice et Bob voulant travailler sur un projet ensemble sur le site [<i class="fa fa-external-link"></i>GitHub](https://github.com) qui hébergera le [<i class="fa fa-share"></i>dépôt canonique](#canonique).
+Prenons l'exemple simple de Alice et Bob voulant travailler sur un projet ensemble sur le site [<span class="glyphicon glyphicon-share"></span>GitHub](https://github.com) qui hébergera le [<span class="glyphicon glyphicon-share-alt"></span>dépôt canonique](#canonique).
 
 Il va avoir trois dépôts au total; un sur le poste de chaque développeurs et un sur le serveur de GitHub.
 
@@ -216,7 +216,7 @@ Alice et Bob acceptent la demande et c'est le dépôt canonique qui se [synchron
 
 ![Schémas pull request](img/canoniqueeve.png){.center-block}
 
-En effet, c'est avec Git que le système d'opération Linux est développé et peut bénéficier d'un modèle de développement "dictateur bienveillant".
+En effet, c'est avec Git que le système d'opération Linux est développé et peut bénéficier d'un modèle de développement **dictateur bienveillant**.
 Ce modèle permet à plusieurs lieutenants ou responsables de recevoir des modifications sur des modules qui leurs sont attribués et d'envoyer au dictateur bienveillant pour l'intégration finale.
 
 ![Schémas d'un workflow dictateur](img/dictateur.png){.center-block}
@@ -281,18 +281,114 @@ Il faut [pousser](#push) les métas-données du dépôt courant à un autre afin
 
 ---
 
+## 4. Utilisation de Git {#usage}
+
+L'utilisation du logiciel Git se fait surtout par ligne de commande, mais des [interfaces graphiques](#gitk) sont aussi disponibles.
+
+Ce chapitre portera sur les différentes commandes de base de Git qui permettent de travailler avec un dépôt local.
+
+Ces commandes reflètent les actions de bases de Git. Le nom des commandes est littéralement le nom de l'action et même dans une interface graphique, les mêmes termes s'y retrouveront.
+
+---
+
+### Initialiser un environnement {#initclone}
+
+Il existe deux moyens internes à git afin d'avoir un dépôt Git sur sa machine locale.
+
+Pour un projet déjà existant, l'utilisateur devra [cloner un dépôt public](#clone).
+
+Pour la création d'un dépôt qui sera partagé, il est recommandé de créer un dépôt sur le site qui hébergera le dépôt public (ou privé) et ensuite cloner.
+
+Dans le cadre d'un nouveau projet local, l'utilisateur peut lui-même [initialiser](#init) un dépôt. 
+
+Lorsqu'un utilisateur crée un dépôt en ligne à l'aide d'un service offert par un site Internet, un serveur Git initialise un dépôt ce qui permet à l'utilisateur de le cloner.
+
+---
+
+#### Cloner un dépôt distant {#clone}
+
+Si un dépôt est disponible en ligne, il est facile de cloner le dépôt avec différent protocoles.
+
+~~~
+git clone https://github.com/drfoliberg/doc-git
+~~~
+
+Le dépôt sera créé dans le répertoire courant dans le nouveau dossier doc-git.
+
+Le dossier doc-git sera alors reconnut comme un dépôt valide et Git configurera **automatiquement** le dépôt distant cloné comme étant le dépôt distant.
+
+C'est à dire que les changements seront poussés vers le dépôt distant cloné.
+
+---
+
+#### Créer un nouveau dépôt {#init}
+
+Si du code déjà existant est dans un répertoire, il est possible d'initialiser un dépôt dans ce répertoire.
+En étant dans le répertoire racine de code la commande init va créer le dossier d'index et de méta-données .git
+
+~~~
+cd /home/justin/projets/moncode
+git init
+~~~
+
+Le répertoire est maintenant reconnut par Git comme étant un dépôt local valide et l'utilisateur peut commencer à consigner son code.
+
+Toutefois, il faudra [ajouter un dépôt distant](#remotes) pour pouvoir y pousser des consignations ou synchroniser son dépôt.
+
+---
+
+### Travailler avec la zone d'index {#index}
+
+La manipulation de la zone d'index ou [<span class="glyphicon glyphicon-share-alt"></span>staging](#staging) est importante afin d'avoir un contrôle total sur ce qui devra être consigné, mais peut être outrepassée lorsque tout doit être mis en consignation.
+
+Il est tout de même fortement recommandé de pouvoir ajouter des changements à la zone d'index ainsi que de gérer quels fichiers s'y retrouveront.
+
+#### Ignorer des fichiers {#gitignore}
+
+Dans la plupart des projets, les développeur vont avoir des fichiers qu'ils ne voudront jamais ajouter à la zone d'index. 
+
+Pour ce faire, les fichiers `.gitignore` contiennent une liste d'expressions de fichiers à exclure récursivement.
+
+Les opérateurs de base `!` et `*` utilisés dans les [<span class="glyphicon glyphicon-share"></span>d'expressions rationnelles](http://www.regular-expressions.info/) sont supportées. 
+
+Afin d'ajouter des fichiers ou des dossiers à ignorer, il faut manuellement modifier le fichier gitignore du répertoire.
+
+Par exemple, dans projet de développement Python, il peut être intéressant de ne pas vouloir les fichiers compilés .pyc.
+
+Pour ignorer les fichiers tous les fichiers .pyc nous allons donc ajouter l'expression \*.pyc au nouveau fichier .gitignore à la racine du projet.
+
+~~~
+echo "*.pyc" >> /home/justin/projets/moncode/.gitignore
+~~~
+
+Pour exclure les fichiers .tmp dans le dossier config seulement, il faut faire un fichier .gitignore dans le dossier config
+
+~~~
+echo "*.tmp" >> /home/justin/projets/moncode/config/.gitignore
+~~~
+
+#### Consulter la zone d'index {#status}
+
+#### Ajouter des modifications à l'index {#add}
+
+#### Enlever des modifications de l'index {#reset}
+
+
 ## Glossaire
 
 ##### `Dépôt canonique` {#canonique} 
 Un dépôt canonique est un dépôt où seul des personnes de confiances ont accès en écriture et tous les autres développeurs prennent leur code à jour en lecture. C'est le dépôt "officiel" du projet.
+
+##### `Staging` {#staging} 
+Nom alternatif commun en anglais à la [zone d'index](#stage).
    
 ---
 
-[<i class="fa fa-download"></i>Télécharger cette page en format PDF](pdf/lastest.pdf)
+[<span class="glyphicon glyphicon-save"></span>Télécharger cette page en format PDF](pdf/lastest.pdf)
 
-[<i class="fa fa-envelope-o"></i>Contacter l'auteur](mailto:duplessisjustin1@gmail.com)
+[<i class="glyphicon glyphicon-envelope"></i>Contacter l'auteur](mailto:duplessisjustin1@gmail.com)
 
-Sources disponibles sur [GitHub<i class="fa fa-github"></i>](https://github.com/drfoliberg/Doc-Git)
+Sources disponibles sur [GitHub<span class="fa fa-github"></span>](https://github.com/drfoliberg/Doc-Git)
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr"><img alt="Licence Creative Commons" style="border-width:0" src="img/by-nc-sa.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">
 
