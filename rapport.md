@@ -1,4 +1,4 @@
-﻿﻿# Présentation d'un rapport technique sur le logiciel de gestion de versions décentralisé Git
+# Présentation d'un rapport technique sur le logiciel de gestion de versions décentralisé Git
 
 ### Par Justin Duplessis
 
