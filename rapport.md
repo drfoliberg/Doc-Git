@@ -369,6 +369,36 @@ echo "*.tmp" >> /home/justin/projets/moncode/config/.gitignore
 
 #### Consulter la zone d'index {#status}
 
+La zone d'index n'est pas enregistrée comme tel sous forme de fichiers lisibles directements par l'utilisateur.
+Il est tout de même facile de consulter les modifications qui sont dans la zone d'index avec la commande suivante:
+
+~~~
+justin@Mizaru:~/gitRepos/Doc-Git(master +0 ~2 -0)$ git status
+# On branch master
+# Changes to be committed:
+#       modified:   .gitignore
+#       modified:   rapport.md
+~~~
+
+Dans ce premier cas, j'ai pris soin de tout ajouter l'index, mais la commande status peut aussi montrer les modifications en attente encore dans la [zone de travail](#edited).
+
+Dans l'exemple qui suit le même dépôt, mais avec de nouvelles modifications qui n'ont pas encore été ajoutées à l'index:
+~~~
+justin@Mizaru:~/gitRepos/Doc-Git(master +0 ~2 -0)$ git status
+# On branch master
+# Changes to be committed:
+#       modified:   .gitignore
+#       modified:   rapport.md
+#
+# Changes not staged for commit:
+#       modified:   rapport.md
+~~~
+
+Pour comparer deux versions de fichiers, l'outil [diff](#diff) permet de comparer ligne par ligne des fichiers de la zone de travail, d'une branche ou d'une consignation précise.
+
+Voir la section sur [diff](#diff) pour plus d'informations.
+
+
 #### Ajouter des modifications à l'index {#add}
 
 #### Enlever des modifications de l'index {#reset}
