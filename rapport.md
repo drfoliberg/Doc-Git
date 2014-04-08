@@ -343,6 +343,8 @@ La manipulation de la zone d'index ou [<span class="glyphicon glyphicon-share-al
 
 Il est tout de même fortement recommandé de pouvoir ajouter des changements à la zone d'index ainsi que de gérer quels fichiers s'y retrouveront.
 
+---
+
 #### Ignorer des fichiers {#gitignore}
 
 Dans la plupart des projets, les développeur vont avoir des fichiers qu'ils ne voudront jamais ajouter à la zone d'index. 
@@ -358,19 +360,21 @@ Par exemple, dans projet de développement Python, il peut être intéressant de
 Pour ignorer les fichiers tous les fichiers .pyc nous allons donc ajouter l'expression \*.pyc au nouveau fichier .gitignore à la racine du projet.
 
 ~~~
-echo "*.pyc" >> /home/justin/projets/moncode/.gitignore
+echo "*.pyc" >> ~/gitRepos/Doc-Git/.gitignore
 ~~~
 
 Pour exclure les fichiers .tmp dans le dossier config seulement, il faut faire un fichier .gitignore dans le dossier config
 
 ~~~
-echo "*.tmp" >> /home/justin/projets/moncode/config/.gitignore
+echo "*.tmp" >> ~/gitRepos/Doc-Git/config/.gitignore
 ~~~
+
+---
 
 #### Consulter la zone d'index {#status}
 
-La zone d'index n'est pas enregistrée comme tel sous forme de fichiers lisibles directements par l'utilisateur.
-Il est tout de même facile de consulter les modifications qui sont dans la zone d'index avec la commande suivante:
+La zone d'index n'est pas enregistrée comme tel sous forme de fichiers lisibles directement par l'utilisateur.
+Il est tout de même facile de consulter les modifications qui sont dans la zone d'index avec la commande `status`.
 
 ~~~
 justin@Mizaru:~/gitRepos/Doc-Git(master +0 ~2 -0)$ git status
@@ -398,11 +402,46 @@ Pour comparer deux versions de fichiers, l'outil [diff](#diff) permet de compare
 
 Voir la section sur [diff](#diff) pour plus d'informations.
 
+---
 
 #### Ajouter des modifications à l'index {#add}
 
+Pour ajouter manuellement un fichier il faut utiliser la commande `add`.
+
+~~~
+git add nouveaufichier.txt
+~~~
+
+Pour ajouter tous les fichiers du répertoire courant, on peut dénoter avec `.`
+
+~~~
+git add .
+~~~
+
+Il est à noter que les fichiers du [<span class="glyphicon glyphicon-share-alt"></span>gitignore](#ignore) ne seront pas ajoutés même si nous spécifions directement le fichier.
+Voici un exemple que Git va afficher. Les messages changent parfois de versions en versions.
+
+~~~
+justin@Mizaru:~/gitRepos/Doc-Git(master +0 ~2 -0)$ echo "*.tmp" >> .gitignore
+justin@Mizaru:~/gitRepos/Doc-Git(master +0 ~2 -0)$ git add allo.tmp
+The following paths are ignored by one of your .gitignore files:
+allo.tmp
+Use -f if you really want to add them.
+fatal: no files added
+~~~
+
+Git averti l'utilisateur qu'aucun fichier n'a été ajouté à cause des règles du [<span class="glyphicon glyphicon-share-alt"></span>gitignore](#ignore), mais qu'il est possible de forcer l'ajout avec l'option `-f`.
+
+~~~
+git add -f allo.tmp
+~~~
+
+---
+
 #### Enlever des modifications de l'index {#reset}
 
+
+---
 
 ## Glossaire
 
@@ -411,6 +450,11 @@ Un dépôt canonique est un dépôt où seul des personnes de confiances ont acc
 
 ##### `Staging` {#staging} 
 Nom alternatif commun en anglais à la [zone d'index](#stage).
+
+##### `.gitignore` {#ignore} 
+Fichier modifiable par l'utilisateur qui contient un ensemble de noms de fichiers, dossiers ou expressions rationnelles simples à [exclure du dépôt Git](#gitignore).
+
+
    
 ---
 
