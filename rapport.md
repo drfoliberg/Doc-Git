@@ -6,7 +6,7 @@
 
 #### Publié sous la licence Creative Commons CC BY-NC-SA 4.0 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr"><img alt="Licence Creative Commons" style="border-width:0" src="img/by-nc-sa.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">
-###### Version du document: 0.0.6
+###### Version du document: 0.0.7
 
 ---
 
@@ -440,6 +440,56 @@ git add -f allo.tmp
 
 #### Enlever des modifications de l'index {#reset}
 
+La commande `reset` est la seule commande de Git qui enlève des changements **sans laisser des traces dans le dépôt**. 
+
+Il est donc fortement recommandé de _lire attentivement_ sur cette commande avant de commencer à l'utiliser.
+
+La commande reset peut s'utiliser en donnant un nom de fichier ou non.
+
+Si aucun nom de fichier n'est donné, **tout le dossier courant sera affecté !**
+
+~~~
+git reset [nom du fichier]
+~~~
+
+Dans la situation suivante, un utilisateur modifie les fichiers _sectionB/fichierB.txt_ et _sectionB/fichierB.txt_, les ajoute dans la zone d'index et décide finalement de retirer les modifications de la sectionB.
+
+~~~
+# Modifications des fichiers
+justin@Mizaru:~/gitRepos/exemples(master +0 ~2 -0)$ git add .
+justin@Mizaru:~/gitRepos/exemples(master +0 ~2 -0)$ git status
+# On branch master
+# Changes to be committed:
+#       new file:   sectionA/fichierA.txt
+#       new file:   sectionB/fichierB.txt
+justin@Mizaru:~/gitRepos/exemples(master +0 ~2 -0)$ git reset sectionB
+# On branch master
+# Changes to be committed:
+#       new file:   sectionA/fichierA.txt
+#
+# Untracked files:
+#       sectionB/
+~~~
+
+Le répertoire de travail n'a pas changé dans ce cas. Seulement ce qui sera inclut dans une consignation à ce moment.
+
+Si un utilisateur travaille sur son dépôt et fait de graves erreurs, l'option `--hard` peut être combinée à la commande reset afin d'enlever les modifications faites au répertoire de travail ainsi que l'index.
+
+Encore une fois, **aucun historique** n'est conservé et il est important de bien penser à ce qu'il faut faire.
+
+**N.B.** l'option --hard ne peut être utilisée pour un dossier
+
+~~~
+justin@Mizaru:~/gitRepos/exemples(master +0 ~2 -0)$ git status
+# On branch master
+# Changes to be committed:
+#       new file:   sectionA/fichierA.txt
+#       new file:   sectionB/fichierB.txt
+justin@Mizaru:~/gitRepos/exemples(master +0 ~2 -0)$ git reset --hard
+HEAD is now at 9559362 ok
+~~~
+
+Dans l'exemple précédent, toutes les modifications ont été annulées et le dépôt est revenu à l'état de la consignation précédente.
 
 ---
 
