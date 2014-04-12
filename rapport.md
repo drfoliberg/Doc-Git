@@ -6,11 +6,11 @@
 
 #### Publié sous la licence Creative Commons CC BY-NC-SA 4.0 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr"><img alt="Licence Creative Commons" style="border-width:0" src="img/by-nc-sa.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">
-###### Version du document: 0.0.7
+###### Version du document: 0.0.8
 
 ---
 
-### Objectif du document
+### Objectifs du document
 
 * Présenter les différences entre les logiciels de versions centralisés et décentralisés
 * Présenter les différents processus de développement possibles.
@@ -40,12 +40,12 @@
         * [Consulter la zone d'index](#status)
         * [Ajouter des modifications à l'index](#add)
         * [Enlever des modifications de l'index](#reset)
-    * [Travailler avec les instantanés]/(#commits)
-        * [Enregistrer les modifications de l'index]/(#commit)
-        * [Consulter les instantanés]/(#log)
-        * [Annuler les modifications publiques]/(#revert)
+    * [Travailler avec les instantanés](#commits)
+        * [Enregistrer les modifications de l'index](#commit)
+        * [Consulter les instantanés](#log)
+        * [Annuler des consignations]/(#revert)
         * [Obtenir une ancienne version]/(#checkout-commit)
-        * [Comparer les modifications]/(#diff)
+        * [Comparer des consignations]/(#diff)
     * [Travailler avec les branches]/(#branches)
         * [Créer une nouvelle branche]/(#branch)
         * [Changer de branche]/(#checkout)
@@ -69,8 +69,8 @@
 Un logiciel de gestion de versions est un logiciel qui gère et conserve un ensemble de fichier et de leurs différentes versions à travers le temps dans une arborescence que l'ont appel dépôt.
 L'utilisation des logiciels de version est surtout utilisé pour gérer du code source, mais peut s'appliquer à d'autres utilisations.
 
-Le but visé est de garder un historique des modifications et les informations relatives aux changements apportés (qui, quand, où, pourquoi).
-La plupart des gestionnaires de versions fournissent des outils afin de comparer les fichiers à leur différent niveau de développement et permettent de restaurer les anciennes versions en intégralité.
+Le but visé est de conserver et de partager dans une équipe un historique des modifications et des informations relatives aux changements apportés (qui, quand, où, pourquoi).
+La plupart des gestionnaires de versions fournissent des outils afin de comparer les fichiers à leurs différents niveaux de développement et permettent de restaurer les anciennes versions du projet en intégralité.
 
 Il existe principalement 3 types de gestionnaires de versions:
 
@@ -151,12 +151,12 @@ C'est un logiciel de versions de contrôles qui plait maintenant aux petits comm
 ### Les instantanés {#snapshots}
 
 Lorsqu'un utilisateur [consigne](#commit) son code, Git enregistre un instantané du répertoire. C'est à dire qu'une copie de chaque fichier est effectuée.
-Bien entendu, les fichiers n'ayant pas changé sont enregistrés sous la forme d'un pointeur au même fichier de la consignation précédente.
+Bien entendu, les fichiers n'ayant pas changés sont enregistrés sous la forme d'un pointeur au même fichier de la consignation précédente.
 
-La synchronisation ou la publication d'un dépôt envoie en fait l'instantané de chaque consignations à envoyer compressées sous forme d'objets.
-Git est donc dépendant de l'historique des fichiers, mais pas autant que certains gestionnaires de versions qui utilisent la différence entre chaque fichier à chaque consignation afin d'essayer d'optimiser l'espace disque requis.
+Git conserve les instantanés  et leur position dans le temps afin de reconstituer l'historique des changements.
+Git est donc dépendant de l'historique des modifications, mais pas autant que certains gestionnaires de versions qui utilisent la différence entre chaque fichier à chaque consignation afin d'essayer d'optimiser l'espace disque requis.
 
-Git gagne en rapidité parce que la décompression de dizaines, voire de centaines de consignations n'est pas nécessaire lors de la comparaison de deux consignations et toutes les opérations de comparaisons se sont locales.
+Git gagne en rapidité parce que la décompression de dizaines, voire de centaines de consignations n'est pas nécessaire lors de la comparaison de deux consignations et toutes les opérations de comparaisons s'effectuent localement.
 
 ---
 
@@ -172,7 +172,7 @@ Git peut "revenir en arrière" en créant un pointeur vers une ancienne consigna
 Git va empêcher l'utilisateur de changer de branche ou de consignation courante si des changements sont dans son [espace de travail](#edited), mais pas dans la [zone indexée](#staged).
 Étant donné que les autres versions ne sont pas accessibles, il est impossible pour l'utilisateur de se tromper de branche et d'oublier des modifications.
 
-**Erreurs matérielle**
+**Erreurs matérielles**
 
 Les consignations sont enregistrées sous forme d'objets et pointent vers d'autres objets tels que des objets de hiérarchie ou de stockage.
 À l'enregistrement des objets, une somme [<span class="glyphicon glyphicon-share"></span>SHA1](http://fr.wikipedia.org/wiki/SHA-1) est calculé et est le nom du fichier de l'objet.
@@ -193,7 +193,7 @@ Il va avoir trois dépôts au total; un sur le poste de chaque développeurs et 
 
 ![schéma centralisé](img/canonique.png){.center-block}
 
-Alice et Bob auront les deux accès en écriture au répertoire canonique car ils se font confiance. Leur processus de développement imite en partie ce qu'une équipe avec un gestionnaire de versions centralisé.
+Alice et Bob auront les deux accès en écriture au répertoire canonique car ils se font confiance. Leur processus de développement ressemble à ce qu'une équipe avec un gestionnaire de versions centralisé ferait.
 
 Alice fait des modifications et la consigne, cette dernière n'est disponible que sur son poste. Alice doit pousser vers le répertoire canonique sa consignation.
 
@@ -201,7 +201,7 @@ Bob peut continuer à développer et finir ses objectifs de modifications comme 
 
 Après un certain nombre de consignations, Bob décide de pousser vers le dépôt canonique. Or, sa branche de dépôt local doit être [synchronisée](#pull) avec la branche du dépôt canonique.
 C'est une étape assez simple et Git va s'occuper de [fusionner](#merge) les modifications faites sur la branche distante vers la branche courante en créant une nouvelle consignation localement.
-Il suffit ensuite de [pousser](#push) au dépôt canonique les dernières modifications.
+Il suffit ensuite de [pousser](#push) au dépôt canonique les dernières modifications rendant ainsi public le fusionnement des dépôts.
 
 ---
 
@@ -386,7 +386,8 @@ justin@Mizaru:~/gitRepos/Doc-Git(master +0 ~2 -0)$ git status
 
 Dans ce premier cas, j'ai pris soin de tout ajouter l'index, mais la commande status peut aussi montrer les modifications en attente encore dans la [zone de travail](#edited).
 
-Dans l'exemple qui suit le même dépôt, mais avec de nouvelles modifications qui n'ont pas encore été ajoutées à l'index:
+L'exemple qui suit est le même dépôt, mais avec de nouvelles modifications qui n'ont pas encore été ajoutées à l'index:
+
 ~~~
 justin@Mizaru:~/gitRepos/Doc-Git(master +0 ~2 -0)$ git status
 # On branch master
@@ -490,6 +491,109 @@ HEAD is now at 9559362 ok
 ~~~
 
 Dans l'exemple précédent, toutes les modifications ont été annulées et le dépôt est revenu à l'état de la consignation précédente.
+
+---
+
+### Travailler avec les instantanés {#commits}
+
+Les instantanés ou consignations ont comme nom commun en anglais `commit`. Les consignations sont en quelques sorte les modifications persistantes du dépôt à rendre publiques.
+
+Lorsqu'une nouvelle fonctionnalités a été implémentée ou un bogue a été réglé, il est convenu de faire une consignation.
+
+La création d'une consignation est presque instantanée et ne requiert pas d'accès réseau à quelconque serveur. C'est une opération locale qui pourrait ensuite être [poussée](#push) vers un [dépôt public](#remotes).
+
+Lors du développement, il est important de consigner et de pousser son code de temps en temps afin de ne pas perdre du travail si un bris ou une erreur arrive.
+
+La consignation de code permet aussi de [revenir à des instantanés](#checkout-commit) précédents et de [comparer](#diff) les différences entre plusieurs instantanés.
+
+Les consignations permettront des structurer des [branches](#branches).
+
+---
+
+#### Enregistrer les modifications de l'index {#commit}
+
+À tout moment, il est possible d'enregistrer le contenu de l'[index](#index) vers les [méta-données](#commited). Les consignations vont garder l'heure de l'enregistrement, l'utilisateur courant et un message de l'utilisateur.
+
+Un message descriptif est nécessaire lors de la consignation et c'est une bonne pratique de prendre un peu de temps afin d'écrire un message décrivant ce qui a été changé et de mettre le numéro du _issue_ affecté. **reformuler**
+
+Afin de consigner, la commande `commit` est utilisée. Il est courant d'inclure un message avec l'option `-m` ou `--message`.
+
+~~~
+git commit -m "mon message de commit"
+~~~
+
+Il est possible d'écrire plusieurs lignes dans un message de consignation en combinant plusieurs fois l'argument `-m`.
+
+~~~
+git commit -m "Bogue 7424" -m "La variable x utilisait le mauvais scope"
+~~~
+
+Lors de consignations, l'ajout des fichiers à la zone d'index manuellement peut-être évité avec l'option `-a` ou `--all`.
+L'option `--all` ajoutera automatiquement toutes le modifications qui sont dans le répertoire de travail à l'index avant de continuer la consignation.
+
+~~~
+git commit -am "mon message de commit"
+~~~
+
+---
+
+#### Consulter les instantanés {#log}
+
+Pour voir un résumé des consignations précédentes, la commande `log` est utilisée.
+
+Lors que beaucoup de consignations sont disponibles, il peut être intéressant de limiter le nombre de consignations.
+
+~~~
+justin@Mizaru:~/gitRepos/doc-git(master +0 ~0 -0)$ git log -2
+commit a1685c1f2f2dde9b161ad2a35afcea650ed888c7
+Author: Justin Duplessis <drfoliberg@gmail.com>
+Date:   Wed Apr 9 17:02:14 2014 -0400
+
+    message 1
+
+commit aac79b084b09aca090ce783672e975bdae5aa612
+Author: Justin Duplessis <drfoliberg@gmail.com>
+Date:   Tue Apr 8 17:42:21 2014 -0400
+
+    message 2
+~~~
+
+Dans l'exemple précédent, l'option `-2` limite le nombre de consignations à afficher à 2. Ce pourrait être n'importe quel entier positif.
+
+Différents formats d'affichage sont disponibles tels que `--stat` et `-p`.
+
+Git offre une multitude de formats prédéfinis et offre même la possibilité d'écrire ses propres formats d'affichages.
+Plus d'informations sont disponibles sur le [<span class="glyphicon glyphicon-share"></span>site officiel](http://git-scm.com/book/en/Git-Basics-Viewing-the-Commit-History).
+
+L'option `--stat` montre sommairement le nombre de lignes modifiées pour chaque fichier.
+
+L'option `-p` montre la différence complète ligne par ligne pour les consignations et est similaire à l'outil [diff](#diff).
+
+Voici un exemple du format `--stat`.
+
+~~~
+justin@Mizaru:~/gitRepos/doc-git(master +0 ~0 -0)$ git log -1 --stat
+commit aac79b084b09aca090ce783672e975bdae5aa612
+Author: Justin Duplessis <drfoliberg@gmail.com>
+Date:   Tue Apr 8 17:42:21 2014 -0400
+
+    chapitre sur utilisation
+
+ rapport.md | 52 ++++++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 48 insertions(+), 4 deletions(-)
+~~~
+
+---
+
+#### Annuler des consignations {#revert}
+
+---
+
+#### Obtenir une ancienne version {#checkout-commit}
+
+---
+
+#### Comparer des consignations {#diff}
 
 ---
 
