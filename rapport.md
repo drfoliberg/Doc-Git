@@ -6,7 +6,7 @@
 
 #### Publié sous la licence Creative Commons CC BY-NC-SA 4.0 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr"><img alt="Licence Creative Commons" style="border-width:0" src="img/by-nc-sa.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">
-###### Version du document: 0.0.8
+###### Version du document: 0.0.9
 
 ---
 
@@ -40,12 +40,14 @@
         * [Consulter la zone d'index](#status)
         * [Ajouter des modifications à l'index](#add)
         * [Enlever des modifications de l'index](#reset)
+        * [Remisage des modifications](#stash)
     * [Travailler avec les instantanés](#commits)
         * [Enregistrer les modifications de l'index](#commit)
+        * [Identifiants de consignations](#id)
         * [Consulter les instantanés](#log)
-        * [Annuler des consignations]/(#revert)
-        * [Obtenir une ancienne version]/(#checkout-commit)
-        * [Comparer des consignations]/(#diff)
+        * [Annuler des consignations](#revert)
+        * [Obtenir une ancienne version](#checkout-commit)
+        * [Comparer des consignations](#diff)
     * [Travailler avec les branches]/(#branches)
         * [Créer une nouvelle branche]/(#branch)
         * [Changer de branche]/(#checkout)
@@ -494,6 +496,82 @@ Dans l'exemple précédent, toutes les modifications ont été annulées et le d
 
 ---
 
+#### Remisage des modifications {#stash}
+
+Lors du développement, il est possible que le processus soit interrompu avec des bogues urgent à régler.
+
+Dans cette situation, la commande `stash` permet de placer le répertoire de travail et l'index courants dans une **remise** ou _stash_ et de les réinitialiser au bon moment.
+
+Pour le développeur, cela peut signifier que son travail en cours doit être interrompu et doit travailler sur un répertoire et un index _propres_. 
+
+Par exemple, dans le fichier sectionA/fichierA.txt, une erreur de syntaxe a été découverte dans la consignation précédente.
+
+Le développeur doit au plus vite modifier et consigner ce changement, mais il est déjà en train de modifier ce fichier.
+
+En remisant son répertoire de travail, cela lui permet d'obtenir une espace de travail d'une consignation précédente.
+
+Le développeur peut alors réparer le code et consigner cette modification, puis remettre son ancien répertoire de travail afin de pouvoir continuer à écrire comme avant.
+
+Voici le processus que le développeur suivra dans la situation précédente
+
+* Consigne ses modifications (bogue introduit ici)
+* Travaille sur une nouvelle fonctionnalité
+* Interruption par le bogue introduit dans la première étape
+* Remisage de ses nouvelles modifications
+* Correction du bogue sur un répertoire de travail propre
+* Consignation de la réparation
+* Restauration de la remise
+* Continue à développer sa nouvelle fonctionnalité
+
+**Remiser son espace de travail**
+
+~~~
+git stash 
+~~~
+
+L'index et le répertoire de travail courants seront remisés et seront réinitialisés dans le dépôt courant à l'état de la dernière consignation.
+
+~~~
+git stash save
+~~~
+
+L'index et le répertoire de travail courants seront remisés, mais resterons inchangés.
+
+**Restaurer son espace de travail**
+
+~~~
+git stash apply [id de remise]
+~~~
+
+L'identifiant de remise peut être omis et sera remplacé par la dernière remise, sinon consulter la liste des remises en mémoire afin de trouver le bon identifiant.
+
+~~~
+git stash pop [id de remise]
+~~~
+
+Cette dernière commande a le même comportement que `apply`, mais supprimera la remise de la liste des remises.
+
+**Consulter les remises en mémoire**
+
+~~~
+git stash list
+~~~
+Produit la liste des remises.
+
+~~~
+git stash show [id de remise]
+~~~
+Cette commande montrera les statistiques (les fichiers et les nombres de lignes modifiées) relatives à une remise.
+
+**Supprimer une remise**
+Pour supprimer une remise qui n'est plus nécessaire.
+
+~~~
+git stash drop [id de remise]
+~~~
+
+---
+
 ### Travailler avec les instantanés {#commits}
 
 Les instantanés ou consignations ont comme nom commun en anglais `commit`. Les consignations sont en quelques sorte les modifications persistantes du dépôt à rendre publiques.
@@ -536,6 +614,37 @@ git commit -am "mon message de commit"
 ~~~
 
 ---
+
+#### Identifiants de consignations {#id}
+
+Lorsqu'une consignation est faite, un identifiant SHA-1 est créé.
+
+Cet identifiant est d'une longueur de 40 caractères hexadécimal et il peut être difficile de se rappeler ou de taper en long les identifiants.
+
+Pour cette raison, il existe deux raccourcis afin de faire référence à une consignation.
+
+##### **Absolu abrégé** {#absoluteid}
+
+Il est possible d'abrégé les identifiants en m'écrivant que les premiers caractères. Dans la plupart des cas, Git va n'afficher que les 7 premiers caractères des identifiants.
+
+La plupart du temps, l'utilisateur peut entrer les 4 premiers caractères d'une consignation et Git va reconnaître l'identifiant.
+
+Par exemple, l'identifiant `a1685c1f2f2dde9b161ad2a35afcea650ed888c7` pourra être abrégé à `a168`.
+
+Si un identifiant similaire possède les même premiers caractères, Git va retourner une erreur et avertir que l'identifiant est ambigüe.
+
+Par exemple, les identifiants `a1685c1f2f2dde9b161ad2a35afcea650ed888c7` et `a16852e4fc161ad2aea688c7f2f2dde9b35` sont introduits dans le projet.
+
+Étant donné que les 4 premiers caractères sont équivalents, l'utilisateur devra rentrer au moins les 5 premiers caractères.
+ 
+##### **Relatif** {#relativeid}
+
+Il est possible de référer à une consignation par sa position relative à une autre consignation ou à une branche.
+
+Par exemple, la référence `HEAD^1` va faire référence à l'avant dernière consignation de la branche HEAD. 
+
+---
+
 
 #### Consulter les instantanés {#log}
 
@@ -587,6 +696,62 @@ Date:   Tue Apr 8 17:42:21 2014 -0400
 
 #### Annuler des consignations {#revert}
 
+Afin d'annuler les effets d'une consignation, Git permet d'enlever des consignations sans toutefois détruire l'historique avec la commande `revert`.
+
+**N.B.** Si une mauvaise consignation a été crée et n'a pas encore été poussé vers un autre dépôt, il est possible avec la commande [reset](#reset) de supprimer la consignation et son historique en spécifiant un numéro de consignation absolue ou relatif.
+
+Les exemples suivants nécessiterons le concept de la [notation abrégée et relative](#id) des consignations.
+
+Prenons exemple d'un dépôt avec les 3 dernières consignations suivantes.
+
+~~~
+justin@Mizaru:~/gitRepos/doc-git(master +0 ~0 -0)$ git log -2
+commit a2179089fce877f3444887244e61125a9172614d
+Author: drfoliberg <drfoliberg@gmail.com>
+Date:   Sat Apr 12 14:43:05 2014 -0400
+
+    début de la section sur les commits
+
+commit a1685c1f2f2dde9b161ad2a35afcea650ed888c7
+Author: Justin Duplessis <drfoliberg@gmail.com>
+Date:   Wed Apr 9 17:02:14 2014 -0400
+
+    fin section index
+~~~
+
+Pour revenir à la consignation `a1685c1` ou `HEAD~`
+
+~~~
+git revert HEAD~
+~~~
+
+Le dépôt contiendra alors 
+
+~~~
+justin@Mizaru:~/gitRepos/doc-git(master +0 ~0 -0)$ git log -2
+commit 0082e254c83de8f5f415dc8285f3aa651b479f61
+Author: Justin Duplessis <drfoliberg@gmail.com>
+Date:   Wed Apr 20 16:20:00 2014 -0400
+
+    Revert "début de la section sur les commits"
+    
+    This reverts commit a2179089fce877f3444887244e61125a9172614d.
+    
+commit a2179089fce877f3444887244e61125a9172614d
+Author: drfoliberg <drfoliberg@gmail.com>
+Date:   Sat Apr 12 14:43:05 2014 -0400
+
+    début de la section sur les commits
+~~~
+
+Notez qu'une nouvelle consignation a été créée et qu'un message automatisé à été donné.
+
+Afin de ne pas créer de nouvelle consignation automatiquement avec la commande `revert`, l'option `-n` ou `--no-commit` peut être ajoutée.
+
+~~~
+git revert HEAD~ -n
+~~~
+
 ---
 
 #### Obtenir une ancienne version {#checkout-commit}
@@ -594,6 +759,22 @@ Date:   Tue Apr 8 17:42:21 2014 -0400
 ---
 
 #### Comparer des consignations {#diff}
+
+---
+
+### Travailler avec les branches {#branches}
+
+---
+
+#### Créer une nouvelle branche {#branch}
+
+---
+
+#### Changer de branche {#checkout}
+
+---
+
+#### Fusionner des branches {#merge}
 
 ---
 
