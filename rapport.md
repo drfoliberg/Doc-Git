@@ -2,18 +2,19 @@
 
 ### Par Justin Duplessis
 
-#### Document basé sur la [documentation officielle Git](http://git-scm.com/doc), la [documentation Atlassin](https://www.atlassian.com/fr/git/tutorial/) et [l'encyclopédie libre Wikipédia](https://wikipedia.org) en Mars 2014
+#### Document basé sur la [documentation officielle Git](http://git-scm.com/doc), la [documentation Atlassin](https://www.atlassian.com/fr/git/tutorial/), [l'encyclopédie libre Wikipédia](https://wikipedia.org) et les [pages man](https://www.kernel.org/pub/software/scm/git/docs/)
 
 #### Publié sous la licence Creative Commons CC BY-NC-SA 4.0 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr"><img alt="Licence Creative Commons" style="border-width:0" src="img/by-nc-sa.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">
-###### Version du document: 0.0.9
+###### Version du document: 0.0.10
+##### Présenté dans le cadre du rapport de stage hiver 2014 au collège Montmorency
 
 ---
 
 ### Objectifs du document
 
 * Présenter les différences entre les logiciels de versions centralisés et décentralisés
-* Présenter les différents processus de développement possibles.
+* Présenter les différents processus de développement possibles
 * Présenter une utilisation poussée de logiciel Git
 
 ## Table des matières
@@ -725,7 +726,12 @@ Pour revenir à la consignation `a1685c1` ou `HEAD~`
 git revert HEAD~
 ~~~
 
-Le dépôt contiendra alors 
+Le dépôt contiendra alors une nouvelle consignation qui enlève la précédente.
+Cette nouvelle consignation va avoir un message générique qui explique qu'est-ce qui a été enlevé.
+
+L'option `-e` ou `--edit` permet de modifier le message de consignation en ouvrant l'éditeur de texte par défaut du système. 
+
+Les plus récentes versions de Git ont cette dernière option par défaut. 
 
 ~~~
 justin@Mizaru:~/gitRepos/doc-git(master +0 ~0 -0)$ git log -2
@@ -744,9 +750,7 @@ Date:   Sat Apr 12 14:43:05 2014 -0400
     début de la section sur les commits
 ~~~
 
-Notez qu'une nouvelle consignation a été créée et qu'un message automatisé à été donné.
-
-Afin de ne pas créer de nouvelle consignation automatiquement avec la commande `revert`, l'option `-n` ou `--no-commit` peut être ajoutée.
+Afin de ne pas créer de nouvelle consignation automatiquement avec la commande `revert`, l'option `-n` ou `--no-commit` peut être ajoutée. Les changements ne seront alors appliquées qu'à l'index et le répertoire de travail.
 
 ~~~
 git revert HEAD~ -n
@@ -756,9 +760,76 @@ git revert HEAD~ -n
 
 #### Obtenir une ancienne version {#checkout-commit}
 
+Git permet d'obtenir n'importe quelle version du projet comme répertoire de travail avec la commande `checkout`.
+
+Si une version du projet à la consignation e4f324 plait particulièrement à un utilisateur, il peut rétablir cette version sans avoir à utiliser les commit `revert` ou `reset`.
+
+**N.B.** Cette technique sert à obtenir une version précise des fichiers afin de compiler ou examiner le projet. C'est une mauvaise idée de rétablir une vielle version et de continuer le développement à ce stade sans [travailler avec des branches](#branches).
+
+Cette commande a plusieurs usages. Afin de comprendre pourquoi, la compréhension des [branches](#branches) est nécessaire.
+
+Afin de rétablir le répertoire de travail et l'index à une consignation spécifique, la commande `checkout` peut être appelée avec un numéro de consignation de cette façon.
+
+~~~
+git checkout HEAD~1
+~~~
+
+Afin de seulement obtenir un fichier, le nom du fichier peut être aussi ajouté de cette façon
+
+~~~
+git checkout HEAD~1 rapport.md
+~~~
+
+La commande `checkout` sera approfondit dans la section de [changement de branches](#checkout).
+
 ---
 
 #### Comparer des consignations {#diff}
+
+La commande `diff` permet de comparer à peu près tous les états et modifications du dépôt.
+
+Par exemple, `diff` permet de comparer l'index au répertoire de travail dans sa plus simple forme.
+
+~~~
+justin@Mizaru:~/gitRepos/tests(master +0 ~1 -0)$ git diff
+index 1c9b77d..bc74b07 100644
+--- a/fichier.txt
++++ b/fichier.txt
+@@ -1 +1 @@
+-ligne supprimée
++ligne ajoutée
+~~~
+
+Il est possible de comparer le répertoire de travail à n'importe quelle consignation en spécifiant son identifiant.
+~~~
+git diff HEAD
+~~~
+
+L'option `--staged` ou `--cached` permet de comparer ce qui est dans l'index à une consignation.
+~~~
+git diff --staged HEAD
+~~~
+
+Afin de comparer deux consignation indépendamment de l'état courant du dépôt, deux identifiants peuvent être données séparés par `..`.
+~~~
+git diff HEAD~4..HEAD
+~~~
+
+Dans tous les cas, afin de seulement comparer un fichier, le nom peut être ajouté à la fin de la commande.
+~~~
+git diff fichier.txt
+~~~
+
+Comme avec la commande `log`, les options `--stat`, `summary` et [<span class="glyphicon glyphicon-share"></span>bien d'autres](http://git-scm.com/docs/git-diff) peuvent être ajoutés afin de changer le format des comparaisons.
+
+L'option `--color` peut être ajoutée afin de voir les lignes ajoutées en vert et les lignes enlevées en rouge.
+~~~
+git diff --color --staged HEAD fichier.txt
+~~~
+
+L'outil `diff` permet aussi de comparer directement des objets dans les méta-données.
+
+Des dizaines d'opérateurs et options sont disponibles dans la documentation [<span class="glyphicon glyphicon-share"></span>officielle de Git](http://git-scm.com/docs/git-diff).
 
 ---
 
@@ -788,8 +859,6 @@ Nom alternatif commun en anglais à la [zone d'index](#stage).
 
 ##### `.gitignore` {#ignore} 
 Fichier modifiable par l'utilisateur qui contient un ensemble de noms de fichiers, dossiers ou expressions rationnelles simples à [exclure du dépôt Git](#gitignore).
-
-
    
 ---
 
