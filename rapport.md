@@ -13,9 +13,9 @@
 
 ### Objectifs du document
 
-* Présenter les différences entre les logiciels de versions centralisés et décentralisés
-* Présenter les différents processus de développement possibles
-* Présenter une utilisation poussée de logiciel Git
+> * Présenter les différences entre les logiciels de versions centralisés et décentralisés
+> * Présenter les différents processus de développement possibles
+> * Présenter une utilisation poussée de logiciel Git
 
 ## Table des matières
 
@@ -95,7 +95,7 @@ Un gestionnaire de versions centralisé **requiert donc un serveur** qui a comme
 Toutes les opérations relatives aux branches et aux consignations ne peuvent être enregistrées qu'avec une connexion au serveur.
 Dans le cas d'une panne, les utilisateurs **ne peuvent pas** aller chercher d'anciennes modifications ni en enregistrer de nouvelles car ils n'ont que leur version courante des fichiers.
 
-![Schémas d'un workflow centralisé](img/centralise.png){.center-block}
+![Schéma d'un workflow centralisé](img/centralise.png){.center-block}
 
 **Exemple de logiciels**
 
@@ -120,7 +120,7 @@ Le développeur de droite pousse lui aussi ses modifications sur son dépôt pub
 L'intégrateur a alors le choix d'accepter les [demandes de synchronisation](#pull-request).
 Une fois les changements intégrés au dépôt canonique, les développeurs peuvent synchroniser leur dépôt, mais ne sont pas obligés pour continuer leur développement immédiat.
 
-![Schémas d'un workflow intégrateur](img/integrateur.png){.center-block}
+![Schéma d'un workflow intégrateur](img/integrateur.png){.center-block}
 
 **Exemple de logiciels**
 
@@ -217,12 +217,12 @@ Le site GitHub fournit cette fonctionnalité et c'est à la base du processus de
 
 Alice et Bob acceptent la demande et c'est le dépôt canonique qui se [synchronisera](#pull) avec le dépôt public de Ève.
 
-![Schémas pull request](img/canoniqueeve.png){.center-block}
+![Schéma pull request](img/canoniqueeve.png){.center-block}
 
 En effet, c'est avec Git que le système d'opération Linux est développé et peut bénéficier d'un modèle de développement **dictateur bienveillant**.
 Ce modèle permet à plusieurs lieutenants ou responsables de recevoir des modifications sur des modules qui leurs sont attribués et d'envoyer au dictateur bienveillant pour l'intégration finale.
 
-![Schémas d'un workflow dictateur](img/dictateur.png){.center-block}
+![Schéma d'un workflow dictateur](img/dictateur.png){.center-block}
 
 ---
 
@@ -237,6 +237,11 @@ Nous aborderons les états suivants:
 * Répertoire de travail
 * Zone d'index
 * Méta-données
+
+---
+Le schéma qui suit illustre le processus que suivent les modifications de l'utilisateur.
+
+![Schéma d'un workflow local](img/workflow.png){.center-block}
 
 ---
 
@@ -703,7 +708,7 @@ Afin d'annuler les effets d'une consignation, Git permet d'enlever des consignat
 
 Les exemples suivants nécessiterons le concept de la [notation abrégée et relative](#id) des consignations.
 
-Prenons exemple d'un dépôt avec les 3 dernières consignations suivantes.
+Prenons exemple d'un dépôt avec les 2 dernières consignations suivantes.
 
 ~~~
 justin@Mizaru:~/gitRepos/doc-git(master +0 ~0 -0)$ git log -2
@@ -726,12 +731,7 @@ Pour revenir à la consignation `a1685c1` ou `HEAD~`
 git revert HEAD~
 ~~~
 
-Le dépôt contiendra alors une nouvelle consignation qui enlève la précédente.
-Cette nouvelle consignation va avoir un message générique qui explique qu'est-ce qui a été enlevé.
-
-L'option `-e` ou `--edit` permet de modifier le message de consignation en ouvrant l'éditeur de texte par défaut du système. 
-
-Les plus récentes versions de Git ont cette dernière option par défaut. 
+Le dépôt contiendra alors la nouvelle consignation `0082e2` qui soustrait les modifications la précédente.
 
 ~~~
 justin@Mizaru:~/gitRepos/doc-git(master +0 ~0 -0)$ git log -2
@@ -749,6 +749,14 @@ Date:   Sat Apr 12 14:43:05 2014 -0400
 
     début de la section sur les commits
 ~~~
+
+![Schéma revert](img/revert.png) {.center-block}
+
+L'espace de travail des consignations `a217908` et `0082e2` sont les mêmes.
+
+La consignation générée aura un message générique qui explique qu'est-ce qui a été enlevé.
+
+L'option `-e` ou `--edit` permet de modifier le message de consignation en ouvrant l'éditeur de texte par défaut du système. 
 
 Afin de ne pas créer de nouvelle consignation automatiquement avec la commande `revert`, l'option `-n` ou `--no-commit` peut être ajoutée. Les changements ne seront alors appliquées qu'à l'index et le répertoire de travail.
 
