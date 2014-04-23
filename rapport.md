@@ -2,7 +2,7 @@
 
 ### Par Justin Duplessis
 
-#### Document basé sur la [documentation officielle Git](http://git-scm.com/doc), la [documentation Atlassin](https://www.atlassian.com/fr/git/tutorial/), [l'encyclopédie libre Wikipédia](https://wikipedia.org) et les [pages man](https://www.kernel.org/pub/software/scm/git/docs/)
+#### Document basé sur la [documentation officielle Git](http://git-scm.com/doc), la [documentation Atlassian](https://www.atlassian.com/fr/git/tutorial/), [l'encyclopédie libre Wikipédia](https://wikipedia.org) et les [pages man](https://www.kernel.org/pub/software/scm/git/docs/)
 
 #### Publié sous la licence Creative Commons CC BY-NC-SA 4.0 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr"><img alt="Licence Creative Commons" style="border-width:0" src="img/by-nc-sa.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">
@@ -49,15 +49,16 @@
         * [Annuler des consignations](#revert)
         * [Obtenir une ancienne version](#checkout-commit)
         * [Comparer des consignations](#diff)
-    * [Travailler avec les branches]/(#branches)
-        * [Créer une nouvelle branche]/(#branch)
-        * [Changer de branche]/(#checkout)
-        * [Fusionner des branches]/(#merge)
+    * [Travailler avec les branches](#branches)
+        * [Créer une nouvelle branche](#branch)
+        * [Changer de branche](#checkout)
+        * [Fusionner des branches](#merge)
 5. [Branches distantes]/(#online)
     * [Ajouter un dépôt distant]/(#remotes)
     * [Pousser]/(#push)
     * [Synchroniser]/(#pull)
     * [Effacer une branche distante]/(#delete-branch)
+    * [Demande de synchronisation]/(#pull-request)
 6. [Gérer les problèmes dans le code]/(#debug)
     * [Annotations]/(#blame)
     * [Recherche dichotomique d'un bogue]/(#bisect)
@@ -115,8 +116,10 @@ Si le dépôt canonique est inaccessible, les utilisateurs peuvent tout de même
 Les gestionnaires de versions décentralisés permettent un **développement hiérarchique**, une technique qui est beaucoup plus difficile à atteindre avec un logiciel centralisé.
 
 Voici un exemple de 3 développeurs qui [poussent](#push) chacun sur un dépôt public des modifications de codes.
+
 Le développeur du milieu décide d'intégrer les changements du développeur de gauche dans son dépôt public avec une [synchronisation](#pull) et demandent à un intégrateur de synchroniser le [<span class="glyphicon glyphicon-share-alt"></span>dépôt canonique](#canonique) avec les modifications de son dépôt public.
 Le développeur de droite pousse lui aussi ses modifications sur son dépôt public et demande à l'intégrateur d'inclure ses changements comme l'autre développeur.
+
 L'intégrateur a alors le choix d'accepter les [demandes de synchronisation](#pull-request).
 Une fois les changements intégrés au dépôt canonique, les développeurs peuvent synchroniser leur dépôt, mais ne sont pas obligés pour continuer leur développement immédiat.
 
@@ -385,7 +388,7 @@ La zone d'index n'est pas enregistrée comme tel sous forme de fichiers lisibles
 Il est tout de même facile de consulter les modifications qui sont dans la zone d'index avec la commande `status`.
 
 ~~~
-justin@Mizaru:~/gitRepos/Doc-Git(master +0 ~2 -0)$ git status
+$ git status
 # On branch master
 # Changes to be committed:
 #       modified:   .gitignore
@@ -397,7 +400,7 @@ Dans ce premier cas, j'ai pris soin de tout ajouter l'index, mais la commande st
 L'exemple qui suit est le même dépôt, mais avec de nouvelles modifications qui n'ont pas encore été ajoutées à l'index:
 
 ~~~
-justin@Mizaru:~/gitRepos/Doc-Git(master +0 ~2 -0)$ git status
+$ git status
 # On branch master
 # Changes to be committed:
 #       modified:   .gitignore
@@ -431,15 +434,15 @@ Il est à noter que les fichiers du [<span class="glyphicon glyphicon-share-alt"
 Voici un exemple que Git va afficher. Les messages changent parfois de versions en versions.
 
 ~~~
-justin@Mizaru:~/gitRepos/Doc-Git(master +0 ~2 -0)$ echo "*.tmp" >> .gitignore
-justin@Mizaru:~/gitRepos/Doc-Git(master +0 ~2 -0)$ git add allo.tmp
+$ echo "*.tmp" >> .gitignore
+$ git add allo.tmp
 The following paths are ignored by one of your .gitignore files:
 allo.tmp
 Use -f if you really want to add them.
 fatal: no files added
 ~~~
 
-Git averti l'utilisateur qu'aucun fichier n'a été ajouté à cause des règles du [<span class="glyphicon glyphicon-share-alt"></span>gitignore](#ignore), mais qu'il est possible de forcer l'ajout avec l'option `-f`.
+Git averti l'utilisateur qu'aucun fichier n'a été ajouté à cause des règles du [<span class="glyphicon glyphicon-share-alt"></span>gitignore](#ignore), mais qu'il est possible de forcer l'ajout avec le modificateur `-f`.
 
 ~~~
 git add -f allo.tmp
@@ -465,13 +468,13 @@ Dans la situation suivante, un utilisateur modifie les fichiers _sectionB/fichie
 
 ~~~
 # Modifications des fichiers
-justin@Mizaru:~/gitRepos/exemples(master +0 ~2 -0)$ git add .
-justin@Mizaru:~/gitRepos/exemples(master +0 ~2 -0)$ git status
+$ git add .
+$ git status
 # On branch master
 # Changes to be committed:
 #       new file:   sectionA/fichierA.txt
 #       new file:   sectionB/fichierB.txt
-justin@Mizaru:~/gitRepos/exemples(master +0 ~2 -0)$ git reset sectionB
+$ git reset sectionB
 # On branch master
 # Changes to be committed:
 #       new file:   sectionA/fichierA.txt
@@ -482,19 +485,19 @@ justin@Mizaru:~/gitRepos/exemples(master +0 ~2 -0)$ git reset sectionB
 
 Le répertoire de travail n'a pas changé dans ce cas. Seulement ce qui sera inclut dans une consignation à ce moment.
 
-Si un utilisateur travaille sur son dépôt et fait de graves erreurs, l'option `--hard` peut être combinée à la commande reset afin d'enlever les modifications faites au répertoire de travail ainsi que l'index.
+Si un utilisateur travaille sur son dépôt et fait de graves erreurs, le modificateur `--hard` peut être combinée à la commande reset afin d'enlever les modifications faites au répertoire de travail ainsi que l'index.
 
 Encore une fois, **aucun historique** n'est conservé et il est important de bien penser à ce qu'il faut faire.
 
-**N.B.** l'option --hard ne peut être utilisée pour un dossier
+**N.B.** le modificateur --hard ne peut être utilisée pour un dossier
 
 ~~~
-justin@Mizaru:~/gitRepos/exemples(master +0 ~2 -0)$ git status
+$ git status
 # On branch master
 # Changes to be committed:
 #       new file:   sectionA/fichierA.txt
 #       new file:   sectionB/fichierB.txt
-justin@Mizaru:~/gitRepos/exemples(master +0 ~2 -0)$ git reset --hard
+$ git reset --hard
 HEAD is now at 9559362 ok
 ~~~
 
@@ -600,7 +603,7 @@ Les consignations permettront des structurer des [branches](#branches).
 
 Un message descriptif est nécessaire lors de la consignation et c'est une bonne pratique de prendre un peu de temps afin d'écrire un message décrivant ce qui a été changé et de mettre le numéro du _issue_ affecté. **reformuler**
 
-Afin de consigner, la commande `commit` est utilisée. Il est courant d'inclure un message avec l'option `-m` ou `--message`.
+Afin de consigner, la commande `commit` est utilisée. Il est courant d'inclure un message avec le modificateur `-m` ou `--message`.
 
 ~~~
 git commit -m "mon message de commit"
@@ -612,8 +615,8 @@ Il est possible d'écrire plusieurs lignes dans un message de consignation en co
 git commit -m "Bogue 7424" -m "La variable x utilisait le mauvais scope"
 ~~~
 
-Lors de consignations, l'ajout des fichiers à la zone d'index manuellement peut-être évité avec l'option `-a` ou `--all`.
-L'option `--all` ajoutera automatiquement toutes le modifications qui sont dans le répertoire de travail à l'index avant de continuer la consignation.
+Lors de consignations, l'ajout des fichiers à la zone d'index manuellement peut-être évité avec le modificateur `-a` ou `--all`.
+Le modificateur `--all` ajoutera automatiquement toutes le modifications qui sont dans le répertoire de travail à l'index avant de continuer la consignation.
 
 ~~~
 git commit -am "mon message de commit"
@@ -659,7 +662,7 @@ Pour voir un résumé des consignations précédentes, la commande `log` est uti
 Lors que beaucoup de consignations sont disponibles, il peut être intéressant de limiter le nombre de consignations.
 
 ~~~
-justin@Mizaru:~/gitRepos/doc-git(master +0 ~0 -0)$ git log -2
+$ git log -2
 commit a1685c1f2f2dde9b161ad2a35afcea650ed888c7
 Author: Justin Duplessis <drfoliberg@gmail.com>
 Date:   Wed Apr 9 17:02:14 2014 -0400
@@ -673,21 +676,21 @@ Date:   Tue Apr 8 17:42:21 2014 -0400
     message 2
 ~~~
 
-Dans l'exemple précédent, l'option `-2` limite le nombre de consignations à afficher à 2. Ce pourrait être n'importe quel entier positif.
+Dans l'exemple précédent, le modificateur `-2` limite le nombre de consignations à afficher à 2. Ce pourrait être n'importe quel entier positif.
 
 Différents formats d'affichage sont disponibles tels que `--stat` et `-p`.
 
 Git offre une multitude de formats prédéfinis et offre même la possibilité d'écrire ses propres formats d'affichages.
 Plus d'informations sont disponibles sur le [<span class="glyphicon glyphicon-share"></span>site officiel](http://git-scm.com/book/en/Git-Basics-Viewing-the-Commit-History).
 
-L'option `--stat` montre sommairement le nombre de lignes modifiées pour chaque fichier.
+Le modificateur `--stat` montre sommairement le nombre de lignes modifiées pour chaque fichier.
 
-L'option `-p` montre la différence complète ligne par ligne pour les consignations et est similaire à l'outil [diff](#diff).
+Le modificateur `-p` montre la différence complète ligne par ligne pour les consignations et est similaire à l'outil [diff](#diff).
 
 Voici un exemple du format `--stat`.
 
 ~~~
-justin@Mizaru:~/gitRepos/doc-git(master +0 ~0 -0)$ git log -1 --stat
+$ git log -1 --stat
 commit aac79b084b09aca090ce783672e975bdae5aa612
 Author: Justin Duplessis <drfoliberg@gmail.com>
 Date:   Tue Apr 8 17:42:21 2014 -0400
@@ -711,7 +714,7 @@ Les exemples suivants nécessiterons le concept de la [notation abrégée et rel
 Prenons exemple d'un dépôt avec les 2 dernières consignations suivantes.
 
 ~~~
-justin@Mizaru:~/gitRepos/doc-git(master +0 ~0 -0)$ git log -2
+$ git log -2
 commit a2179089fce877f3444887244e61125a9172614d
 Author: drfoliberg <drfoliberg@gmail.com>
 Date:   Sat Apr 12 14:43:05 2014 -0400
@@ -734,7 +737,7 @@ git revert HEAD~
 Le dépôt contiendra alors la nouvelle consignation `0082e2` qui soustrait les modifications la précédente.
 
 ~~~
-justin@Mizaru:~/gitRepos/doc-git(master +0 ~0 -0)$ git log -2
+$ git log -2
 commit 0082e254c83de8f5f415dc8285f3aa651b479f61
 Author: Justin Duplessis <drfoliberg@gmail.com>
 Date:   Wed Apr 20 16:20:00 2014 -0400
@@ -756,9 +759,9 @@ L'espace de travail des consignations `a217908` et `0082e2` sont les mêmes.
 
 La consignation générée aura un message générique qui explique qu'est-ce qui a été enlevé.
 
-L'option `-e` ou `--edit` permet de modifier le message de consignation en ouvrant l'éditeur de texte par défaut du système. 
+Le modificateur `-e` ou `--edit` permet de modifier le message de consignation en ouvrant l'éditeur de texte par défaut du système. 
 
-Afin de ne pas créer de nouvelle consignation automatiquement avec la commande `revert`, l'option `-n` ou `--no-commit` peut être ajoutée. Les changements ne seront alors appliquées qu'à l'index et le répertoire de travail.
+Afin de ne pas créer de nouvelle consignation automatiquement avec la commande `revert`, le modificateur `-n` ou `--no-commit` peut être ajoutée. Les changements ne seront alors appliquées qu'à l'index et le répertoire de travail.
 
 ~~~
 git revert HEAD~ -n
@@ -799,7 +802,7 @@ La commande `diff` permet de comparer à peu près tous les états et modificati
 Par exemple, `diff` permet de comparer l'index au répertoire de travail dans sa plus simple forme.
 
 ~~~
-justin@Mizaru:~/gitRepos/tests(master +0 ~1 -0)$ git diff
+$ git diff
 index 1c9b77d..bc74b07 100644
 --- a/fichier.txt
 +++ b/fichier.txt
@@ -813,7 +816,7 @@ Il est possible de comparer le répertoire de travail à n'importe quelle consig
 git diff HEAD
 ~~~
 
-L'option `--staged` ou `--cached` permet de comparer ce qui est dans l'index à une consignation.
+Le modificateur `--staged` ou `--cached` permet de comparer ce qui est dans l'index à une consignation.
 ~~~
 git diff --staged HEAD
 ~~~
@@ -830,7 +833,7 @@ git diff fichier.txt
 
 Comme avec la commande `log`, les options `--stat`, `summary` et [<span class="glyphicon glyphicon-share"></span>bien d'autres](http://git-scm.com/docs/git-diff) peuvent être ajoutés afin de changer le format des comparaisons.
 
-L'option `--color` peut être ajoutée afin de voir les lignes ajoutées en vert et les lignes enlevées en rouge.
+Le modificateur `--color` peut être ajoutée afin de voir les lignes ajoutées en vert et les lignes enlevées en rouge.
 ~~~
 git diff --color --staged HEAD fichier.txt
 ~~~
@@ -843,17 +846,102 @@ Des dizaines d'opérateurs et options sont disponibles dans la documentation [<s
 
 ### Travailler avec les branches {#branches}
 
+**Introduction aux branches**
+
+Les branches sont en quelque sorte une ligne de développement. Les branches permettent de séparer le processus de développement à des consignations précises.
+
+Une branche est une suite de consignation et jusqu'à maintenant, tous les exemples utilisaient implicitement la branche `master` qui est considérée comme la branche maitresse du projet.
+
+Chaque développeur peut créer sa propre branche localement et ensuite la [pousser vers un dépôt public](#push).
+
+Les branches permettent de pouvoir partager son code sans affecter le processus de développement d'un autre programmeur qui travaille sur une version spécifique du projet.
+
+**Le développement par branches**
+
+Nous n'aborderons pas en détails les différents processus de développement avec les branches, mais nous verrons rapidement le développement par fonctionnalité. 
+
+Le développement par fonctionnalité consiste à créer une nouvelle pour chaque fonctionnalité.
+
+En temps normal dans un processus par branches de fonctionnalités, la branche `master` n'est modifiée que lorsqu'une nouvelle version du programme est officiellement déployée en fusionnant des branches de fonctionnalités.
+
+Évidemment, il est courant d'avoir une branche de développement sur laquelle les branches de fonctionnalités sont fusionnées pour tester avant de fusionner vers `master`.
+
+Lorsqu'une nouvelle fonctionnalité est demandée, le développeur responsable devra [créer une branche](#branch) locale et la [pousser](#push) sur le dépôt officiel ou faire une [demande de synchronisation](#pull-request).
+
+Pour plus d'explications sur les différentes méthodes de développement par branches, je vous invite à consulter la [documentation de Atlassian sur les processus de développement avec Git](https://www.atlassian.com/git/workflows) qui est complète tout en restant assez simple.
+
 ---
 
 #### Créer une nouvelle branche {#branch}
+
+La commande `branch` permet de visualiser une liste des branches du dépôt courant. La branche courante du dépôt est identifiée par le caractère `*` en début de ligne.
+
+~~~
+$ git branch
+  autreBranche
+* master
+~~~
+
+La commande `branch` peut aussi créer une nouvelle branche en spécifiant un nouveau nom.
+
+Voici comment créer une nouvelle branche appelée `maBranche`
+~~~
+git branch maBranche
+~~~
+
+Il est à noter que la branche courante du dépôt **n'a pas changée**
+~~~
+$ git branch
+  autreBranche
+  maBranche
+* master
+~~~
+
+La section [suivante](#checkout) expliquera comment changer de branche.
+
+**Renommer une branche**
+Il n'est pas recommandé de renommer une branche après l'avoir publiée, mais il est possible de renommer la branche courante avec la commande `branch` combinée avec le modificateur `-m`
+~~~
+$ git branch
+  autreBranche
+* maBranche
+  master
+$ git branch -m nouveauNom
+$ git branch
+  autreBranche
+* nouveauNom
+  master
+~~~
 
 ---
 
 #### Changer de branche {#checkout}
 
+Précédemment, la commande `checkout` a permit de [changer de consignation](#checkout-commit), mais cette commande sert principalement à changer de branche courante.
+
+Dans sa forme la plus simple, `checkout` est combiné avec le nom de la branche existante ciblée.
+~~~
+git checkout autreBranche
+~~~
+
+Pour les impatients, `checkout` permet de créer une nouvelle branche d'y changer avec le modificateur `-b`.
+~~~
+$ git branch
+* master
+$ git branch -m nouvelleBranche
+$ git branch
+* nouvelleBranche
+  master
+~~~
+
 ---
 
 #### Fusionner des branches {#merge}
+
+
+**Fast-Forward**
+
+**3-way merge**
 
 ---
 
