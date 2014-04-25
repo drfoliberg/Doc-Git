@@ -53,6 +53,7 @@
         * [Créer une nouvelle branche](#branch)
         * [Changer de branche](#checkout)
         * [Fusionner des branches](#merge)
+        * [Supprimer une branche locale](#del-local)
 5. [Branches distantes]/(#online)
     * [Ajouter un dépôt distant]/(#remotes)
     * [Pousser]/(#push)
@@ -61,6 +62,7 @@
     * [Demande de synchronisation]/(#pull-request)
 6. [Gérer les problèmes dans le code]/(#debug)
     * [Annotations]/(#blame)
+    * [Conflits]/(#conflicts)
     * [Recherche dichotomique d'un bogue]/(#bisect)
 7. [Outils supplémentaires]
     * [Interfaces graphiques]/(#gitk)
@@ -906,7 +908,9 @@ $ git branch
   autreBranche
 * maBranche
   master
+  
 $ git branch -m nouveauNom
+
 $ git branch
   autreBranche
 * nouveauNom
@@ -924,11 +928,13 @@ Dans sa forme la plus simple, `checkout` est combiné avec le nom de la branche 
 git checkout autreBranche
 ~~~
 
-Pour les impatients, `checkout` permet de créer une nouvelle branche d'y changer avec le modificateur `-b`.
+Pour les impatients, la commande `checkout` permet aussi de créer une nouvelle branche et de s'y déplacer avec le modificateur `-b`.
 ~~~
 $ git branch
 * master
+
 $ git branch -m nouvelleBranche
+
 $ git branch
 * nouvelleBranche
   master
@@ -938,10 +944,51 @@ $ git branch
 
 #### Fusionner des branches {#merge}
 
+Afin de combiner le travail de plusieurs développeurs de manière élégante, il est important de bien fusionner les branches.
 
-**Fast-Forward**
+Fusionner des branches consiste à amener les modifications faites dans les branches sources vers une branche commune.
 
-**3-way merge**
+Le fusionnement de branches utilise la commande Git `merge`.
+
+Il est possible la grande majorité du temps d'éviter les [conflits de fusionnement](#conflicts), mais il est parfois possible que Git ne puisse résoudre les conflits.
+Des outils sont disponibles afin de résoudre les conflits et seront abordés rapidement dans la [section sur les conflits](#conflicts).
+
+Dans sa forme la plus simple, un `merge` peut fusionner une branche spécifiée à la branche courante.
+~~~
+git merge maBrancheSource
+~~~
+Ce dernier exemple aura pour effet d'ajouter les consignations de la branche source vers la branche courante. Git va décider dans ce cas si une fusion [Fast-Forward](#fast-forward) ou [3-way](#3-way) est appropriée.
+
+Il est important de faire la distinction entre ces deux types de fusions et les problèmes possibles afin d'adapter son processus de développement pour une intégration facile des changements.
+
+##### **Fast-Forward** {#fast-forward}
+La fusion **Fast-Forward** s'applique lorsque les changements sont seulement dans la branche source.
+
+C'est à dire que des consignations sont présentes sur qu'une seule branche.
+Git n'a donc qu'à avancer l'historique des consignations en ajoutant celles-ci à la branche de destination sans réellement faire une fusion des deux branches. Le nom **Fast-Forward** vient donc du fait que ce type de fusion n'est en fait qu'une mise à jour de la branche de destination.
+
+<!-- À FAIRE : ajouter exemple processus et graphique -->
+
+##### **3-way merge** {#3-way}
+
+<!-- À FAIRE : ajouter description -->
+
+<!-- À FAIRE : ajouter exemple processus et graphique -->
+
+---
+
+#### Supprimer une branche locale {#del-local}
+Afin de supprimer une branche qui n'a pas encore été [poussée](#push) vers un dépôt distant, la commande `branch` est utilisée avec le modificateur `-d`.
+~~~
+git branch -d brancheASupprimer
+~~~
+
+Git va empêcher de supprimer la branche si des modifications n'ont pas été [fusionnées](#merge) vers une autre branche.
+
+Afin de forcer la suppression, le modificateur `-D` est utilisé.
+~~~
+git branche -D brancheASupprimer
+~~~
 
 ---
 
