@@ -6,7 +6,7 @@
 
 #### Publié sous la licence Creative Commons CC BY-NC-SA 4.0 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr"><img alt="Licence Creative Commons" style="border-width:0" src="img/by-nc-sa.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">
-###### Version du document: 0.0.10
+###### Version du document: 0.0.11
 ##### Présenté dans le cadre du rapport de stage hiver 2014 au collège Montmorency
 
 ---
@@ -842,7 +842,7 @@ git diff --color --staged HEAD fichier.txt
 
 L'outil `diff` permet aussi de comparer directement des objets dans les méta-données.
 
-Des dizaines d'opérateurs et options sont disponibles dans la documentation [<span class="glyphicon glyphicon-share"></span>officielle de Git](http://git-scm.com/docs/git-diff).
+Des dizaines d'opérateurs et options sont disponibles dans la [<span class="glyphicon glyphicon-share"></span>documentation officielle de Git](http://git-scm.com/docs/git-diff).
 
 ---
 
@@ -958,22 +958,50 @@ Dans sa forme la plus simple, un `merge` peut fusionner une branche spécifiée 
 git merge maBrancheSource
 ~~~
 Ce dernier exemple aura pour effet d'ajouter les consignations de la branche source vers la branche courante. Git va décider dans ce cas si une fusion [Fast-Forward](#fast-forward) ou [3-way](#3-way) est appropriée.
+Il est important de faire la distinction entre ces **deux types de fusions** et les problèmes possibles afin d'adapter son processus de développement pour une intégration facile des changements.
 
-Il est important de faire la distinction entre ces deux types de fusions et les problèmes possibles afin d'adapter son processus de développement pour une intégration facile des changements.
+**N.B.** La fusion 3-way n'est qu'un type de fusion et pas un algorithmes comme tel.
+
+Afin de voir les différents algorithmes de fusions 3-way et leur particularités, veuillez visiter la [<span class="glyphicon glyphicon-share"></span>documentation officielle de Git](http://git-scm.com/docs/git-merge).
+
+---
 
 ##### **Fast-Forward** {#fast-forward}
 La fusion **Fast-Forward** s'applique lorsque les changements sont seulement dans la branche source.
 
-C'est à dire que des consignations sont présentes sur qu'une seule branche.
+C'est à dire que des consignations n'ont été ajoutées que sur une seule branche.
 Git n'a donc qu'à avancer l'historique des consignations en ajoutant celles-ci à la branche de destination sans réellement faire une fusion des deux branches. Le nom **Fast-Forward** vient donc du fait que ce type de fusion n'est en fait qu'une mise à jour de la branche de destination.
 
-<!-- À FAIRE : ajouter exemple processus et graphique -->
+Dans la cas suivant, un développeur crée une branche à partir de la branche maitre de son dépôt et y ajoute 2 nouvelles consignations.
+
+![Schéma d'une fusion fast-forward avant la fusion](img/fastforward.png){.center-block}
+
+Le diagramme précédant illustre les consignations de chaque branche.
+
+Lors que le développeur va fusionner sa branche `branche` dans sa branche `master`, Git va faire pointer `master` à  la dernière consignation de la façon suivante.
+
+![Schéma d'une fusion fast-forward après la fusion](img/fastforward.merged.png){.center-block}
+
+Il est maintenant possible de faire une nouvelle branche et de faire une nouvelle fonctionnalité.
+
+---
 
 ##### **3-way merge** {#3-way}
+La fusion **3-way** est nécessaire lorsque la branche de destination a des consignations qui ne sont pas dans la branche source.
 
-<!-- À FAIRE : ajouter description -->
+C'est le cas souvent lorsque plusieurs développeurs travaillent sur une même projet.
 
-<!-- À FAIRE : ajouter exemple processus et graphique -->
+Git va créer une nouvelle consignation afin de fusionner les deux branches, mais cela ne requiert généralement pas plus d'interaction utilisateur qu'une fusion de type [fast-forward](#fast-forward).
+
+Dans la situation suivante, la branche `branche` a été créée afin de développer une fonctionnalité, mais une consignation a été ajoutée entre temps sur la branche `master`.
+
+![Schéma d'une fusion 3-way avant la fusion](img/3way.png){.center-block}
+
+Lors de la fusion de `branche` vers `master`, une nouvelle consignation (mise en rouge dans la diagramme suivant) dans `master` sera créée.
+
+Après cette fusion, seulement la branche `master` contiendra les modifications des deux branches. La branche `branche` reste inchangée.
+
+![Schéma d'une fusion 3-way après la fusion](img/3way.merged.png){.center-block}
 
 ---
 
