@@ -2,11 +2,14 @@
 
 ### Par Justin Duplessis
 
-#### Document basé sur la [documentation officielle Git](http://git-scm.com/doc), la [documentation Atlassian](https://www.atlassian.com/fr/git/tutorial/), [l'encyclopédie libre Wikipédia](https://wikipedia.org) et les [pages man](https://www.kernel.org/pub/software/scm/git/docs/)
+#### Document basé sur la [documentation officielle Git](http://git-scm.com/doc), la [documentation Atlassian](https://www.atlassian.com/fr/git/tutorial/),
+ [l'encyclopédie libre Wikipédia](https://wikipedia.org) et les [pages man](https://www.kernel.org/pub/software/scm/git/docs/)
 
-#### Publié sous la licence Creative Commons CC BY-NC-SA 4.0 
-<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr"><img alt="Licence Creative Commons" style="border-width:0" src="img/by-nc-sa.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">
-###### Version du document: 0.0.11
+#### Publié sous la licence Creative Commons CC BY-NC-SA 4.0
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr">
+<img alt="Licence Creative Commons" style="border-width:0" src="img/by-nc-sa.png" />
+</a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">
+###### Version du document: 0.0.12
 ##### Présenté dans le cadre du rapport de stage hiver 2014 au collège Montmorency
 
 ---
@@ -53,6 +56,7 @@
         * [Créer une nouvelle branche](#branch)
         * [Changer de branche](#checkout)
         * [Fusionner des branches](#merge)
+        * [Rebaser des branches](#rebase)
         * [Supprimer une branche locale](#del-local)
 5. [Branches distantes]/(#online)
     * [Ajouter un dépôt distant]/(#remotes)
@@ -84,7 +88,8 @@ Il existe principalement 3 types de gestionnaires de versions:
 * Décentralisé
 * Local
 
-La majeure différence des gestionnaire de versions se fait sur la manière donc les clients enregistrent leurs modifications dans le dépôt et peut fortement affecter le processus de développement si le gestionnaire de versions n'est pas adapté.
+La majeure différence des gestionnaire de versions se fait sur la manière donc les clients enregistrent leurs modifications dans le dépôt et peut fortement affecter le processus de développement si le 
+gestionnaire de versions n'est pas adapté.
 
 Ce document a pour buts de démontrer l'utilisation du gestionnaire de versions Git et comparer en quoi certaines alternatives peuvent handicaper le processus de développement.
 
@@ -93,7 +98,8 @@ Ce document a pour buts de démontrer l'utilisation du gestionnaire de versions 
 ### Centralisé {#centralise}
 Un logiciel de gestion de versions centralisé enregistre le dépôt à un seul endroit et les client n'ont que le minimum sur leur poste.
 
-Un gestionnaire de versions centralisé **requiert donc un serveur** qui a comme rôle de conserver l'arborescence et ses modifications et d'interagir avec les clients afin d'enregistrer de nouvelles modifications et distribuer l'arborescence.
+Un gestionnaire de versions centralisé **requiert donc un serveur** qui a comme rôle de conserver l'arborescence et ses modifications et d'interagir avec les clients afin d'enregistrer 
+de nouvelles modifications et distribuer l'arborescence.
 
 Toutes les opérations relatives aux branches et aux consignations ne peuvent être enregistrées qu'avec une connexion au serveur.
 Dans le cas d'une panne, les utilisateurs **ne peuvent pas** aller chercher d'anciennes modifications ni en enregistrer de nouvelles car ils n'ont que leur version courante des fichiers.
@@ -110,7 +116,8 @@ Subversion (SVN) de la fondation Apache et Team Foundation Server (TFS) de Micro
 
 Un gestionnaire de versions décentralisé **ne requiert pas** de serveur central car chaque client a l'entièreté des données relatives à l'arborescence ainsi que ses modifications.
 
-Toutes les opérations relatives aux consignations et aux branches sont traités localement par le gestionnaire de versions installé. Ensuite, le développeur peut décider de publier sur un [<span class="glyphicon glyphicon-share-alt"></span>dépôt canonique](#canonique) ses modifications.
+Toutes les opérations relatives aux consignations et aux branches sont traités localement par le gestionnaire de versions installé. Ensuite, le développeur peut décider de publier sur un 
+[<span class="glyphicon glyphicon-share-alt"></span>dépôt canonique](#canonique) ses modifications.
 
 Il est à noter que le dépôt canonique et les dépôts clients vont avoir exactement les mêmes données une fois synchronisés.
 Si le dépôt canonique est inaccessible, les utilisateurs peuvent tout de même enregistrer des modifications sur leur poste et les envoyer plus tard au dépôt.
@@ -119,7 +126,8 @@ Les gestionnaires de versions décentralisés permettent un **développement hi�
 
 Voici un exemple de 3 développeurs qui [poussent](#push) chacun sur un dépôt public des modifications de codes.
 
-Le développeur du milieu décide d'intégrer les changements du développeur de gauche dans son dépôt public avec une [synchronisation](#pull) et demandent à un intégrateur de synchroniser le [<span class="glyphicon glyphicon-share-alt"></span>dépôt canonique](#canonique) avec les modifications de son dépôt public.
+Le développeur du milieu décide d'intégrer les changements du développeur de gauche dans son dépôt public avec une [synchronisation](#pull) et demandent à un intégrateur de synchroniser le 
+[<span class="glyphicon glyphicon-share-alt"></span>dépôt canonique](#canonique) avec les modifications de son dépôt public.
 Le développeur de droite pousse lui aussi ses modifications sur son dépôt public et demande à l'intégrateur d'inclure ses changements comme l'autre développeur.
 
 L'intégrateur a alors le choix d'accepter les [demandes de synchronisation](#pull-request).
@@ -150,7 +158,8 @@ Le développement et l'utilisation de ces logiciels de versions ne sont plus vra
 Git est un logiciel libre écrit par Linus Torvalds et publié sous la licence GNU GPL v2 en avril 2005.
 Ce gestionnaire de versions a été conçu pour ne pas avoir besoin d'un serveur centralisé afin de gérer les modifications d'une arborescence et vise un support complet du développement non-linéaire.
 
-Ces spécifications sont dues au fait que Git a été conçu pour remplacer l'ancien gestionnaire de contrôle pour le système d'exploitation Linux. Ce système d'exploitation est développé par plus de 8000 contributeurs autour du monde et nécessite un processus de [développement bien particulier](#dictator).
+Ces spécifications sont dues au fait que Git a été conçu pour remplacer l'ancien gestionnaire de contrôle pour le système d'exploitation Linux. Ce système d'exploitation est développé par plus de 
+8000 contributeurs autour du monde et nécessite un processus de [développement bien particulier](#dictator).
 
 C'est un logiciel de versions de contrôles qui plait maintenant aux petits comme aux grands projets grâce à sa flexibilité, sa rapidité et sa robustesse.
 
@@ -162,9 +171,11 @@ Lorsqu'un utilisateur [consigne](#commit) son code, Git enregistre un instantan�
 Bien entendu, les fichiers n'ayant pas changés sont enregistrés sous la forme d'un pointeur au même fichier de la consignation précédente.
 
 Git conserve les instantanés  et leur position dans le temps afin de reconstituer l'historique des changements.
-Git est donc dépendant de l'historique des modifications, mais pas autant que certains gestionnaires de versions qui utilisent la différence entre chaque fichier à chaque consignation afin d'essayer d'optimiser l'espace disque requis.
+Git est donc dépendant de l'historique des modifications, mais pas autant que certains gestionnaires de versions qui utilisent la différence entre chaque fichier à chaque consignation afin 
+d'essayer d'optimiser l'espace disque requis.
 
-Git gagne en rapidité parce que la décompression de dizaines, voire de centaines de consignations n'est pas nécessaire lors de la comparaison de deux consignations et toutes les opérations de comparaisons s'effectuent localement.
+Git gagne en rapidité parce que la décompression de dizaines, voire de centaines de consignations n'est pas nécessaire lors de la comparaison de deux consignations et toutes les opérations de 
+comparaisons s'effectuent localement.
 
 ---
 
@@ -195,7 +206,8 @@ En même temps, ces clés SHA1 servent de pointeurs pour d'autres objets.
 ### Communication entre les dépôts {#github}
 
 Dans la plupart des cas, une équipe de développement n'aura pas besoin d'un serveur Git car de nombreux services existants remplissent la tâche.
-Prenons l'exemple simple de Alice et Bob voulant travailler sur un projet ensemble sur le site [<span class="glyphicon glyphicon-share"></span>GitHub](https://github.com) qui hébergera le [<span class="glyphicon glyphicon-share-alt"></span>dépôt canonique](#canonique).
+Prenons l'exemple simple de Alice et Bob voulant travailler sur un projet ensemble sur le site [<span class="glyphicon glyphicon-share"></span>GitHub](https://github.com) qui hébergera 
+le [<span class="glyphicon glyphicon-share-alt"></span>dépôt canonique](#canonique).
 
 Il va avoir trois dépôts au total; un sur le poste de chaque développeurs et un sur le serveur de GitHub.
 
@@ -217,7 +229,8 @@ Il suffit ensuite de [pousser](#push) au dépôt canonique les dernières modifi
 
 Reprenons l'exemple précédant. Avec la montée du projet de Alice et Bob, Ève souhaite se joindre à l'équipe, mais ni Bob ni Alice ne connait Ève.
 
-Sans même avoir besoin de l'autorisation du dépôt canonique, Ève peut copier le dépôt et travailler localement. Lorsqu'Ève veut pousser vers le dépôt canonique, elle devra pousser sur un dépôt public qui lui appartient afin se faire une demande de synchronisation au dépôt canonique.
+Sans même avoir besoin de l'autorisation du dépôt canonique, Ève peut copier le dépôt et travailler localement. Lorsqu'Ève veut pousser vers le dépôt canonique, elle devra pousser sur un dépôt 
+public qui lui appartient afin se faire une demande de synchronisation au dépôt canonique.
 Le site GitHub fournit cette fonctionnalité et c'est à la base du processus de développement logiciel libre.
 
 Alice et Bob acceptent la demande et c'est le dépôt canonique qui se [synchronisera](#pull) avec le dépôt public de Ève.
@@ -254,9 +267,11 @@ Le schéma qui suit illustre le processus que suivent les modifications de l'uti
 
 La zone de travail est l'arborescence des fichiers du projet qui sont directement accessibles sur le disque par l'utilisateur.
 
-Les modifications faites dans la zone de travail ne seront pas inclus lors une [consignation](#commit). Afin d'enregistrer des modifications faites dans le répertoire de travail, l'utilisateur doit [ajouter à la zone d'index](#add) ses changements.
+Les modifications faites dans la zone de travail ne seront pas inclus lors une [consignation](#commit). Afin d'enregistrer des modifications faites dans le répertoire de travail, 
+l'utilisateur doit [ajouter à la zone d'index](#add) ses changements.
 
-Lorsque le dépôt local va être [synchronisé](#pull) ou va changer de branche, Git vérifie si des modifications sont présentes dans le répertoire de travail et empêcher l'utilisateur de continuer si tel est le cas.
+Lorsque le dépôt local va être [synchronisé](#pull) ou va changer de branche, Git vérifie si des modifications sont présentes dans le répertoire de travail et empêcher l'utilisateur 
+de continuer si tel est le cas.
 
 **N.B.** En anglais, le répertoire de travail a comme nom _working directory_.
 
@@ -352,7 +367,8 @@ Toutefois, il faudra [ajouter un dépôt distant](#remotes) pour pouvoir y pouss
 
 ### Travailler avec la zone d'index {#index}
 
-La manipulation de la zone d'index ou [<span class="glyphicon glyphicon-share-alt"></span>staging](#staging) est importante afin d'avoir un contrôle total sur ce qui devra être consigné, mais peut être outrepassée lorsque tout doit être mis en consignation.
+La manipulation de la zone d'index ou [<span class="glyphicon glyphicon-share-alt"></span>staging](#staging) est importante afin d'avoir un contrôle total sur ce qui devra être consigné, 
+mais peut être outrepassée lorsque tout doit être mis en consignation.
 
 Il est tout de même fortement recommandé de pouvoir ajouter des changements à la zone d'index ainsi que de gérer quels fichiers s'y retrouveront.
 
@@ -444,7 +460,8 @@ Use -f if you really want to add them.
 fatal: no files added
 ~~~
 
-Git averti l'utilisateur qu'aucun fichier n'a été ajouté à cause des règles du [<span class="glyphicon glyphicon-share-alt"></span>gitignore](#ignore), mais qu'il est possible de forcer l'ajout avec le modificateur `-f`.
+Git averti l'utilisateur qu'aucun fichier n'a été ajouté à cause des règles du [<span class="glyphicon glyphicon-share-alt"></span>gitignore](#ignore), mais qu'il est possible de forcer l'ajout 
+avec le modificateur `-f`.
 
 ~~~
 git add -f allo.tmp
@@ -466,7 +483,8 @@ Si aucun nom de fichier n'est donné, **tout le dossier courant sera affecté !*
 git reset [nom du fichier]
 ~~~
 
-Dans la situation suivante, un utilisateur modifie les fichiers _sectionB/fichierB.txt_ et _sectionB/fichierB.txt_, les ajoute dans la zone d'index et décide finalement de retirer les modifications de la sectionB.
+Dans la situation suivante, un utilisateur modifie les fichiers _sectionB/fichierB.txt_ et _sectionB/fichierB.txt_, les ajoute dans la zone d'index et décide finalement 
+de retirer les modifications de la sectionB.
 
 ~~~
 # Modifications des fichiers
@@ -487,7 +505,8 @@ $ git reset sectionB
 
 Le répertoire de travail n'a pas changé dans ce cas. Seulement ce qui sera inclut dans une consignation à ce moment.
 
-Si un utilisateur travaille sur son dépôt et fait de graves erreurs, le modificateur `--hard` peut être combinée à la commande reset afin d'enlever les modifications faites au répertoire de travail ainsi que l'index.
+Si un utilisateur travaille sur son dépôt et fait de graves erreurs, le modificateur `--hard` peut être combinée à la commande reset afin d'enlever les modifications faites au répertoire 
+de travail ainsi que l'index.
 
 Encore une fois, **aucun historique** n'est conservé et il est important de bien penser à ce qu'il faut faire.
 
@@ -589,7 +608,8 @@ Les instantanés ou consignations ont comme nom commun en anglais `commit`. Les 
 
 Lorsqu'une nouvelle fonctionnalités a été implémentée ou un bogue a été réglé, il est convenu de faire une consignation.
 
-La création d'une consignation est presque instantanée et ne requiert pas d'accès réseau à quelconque serveur. C'est une opération locale qui pourrait ensuite être [poussée](#push) vers un [dépôt public](#remotes).
+La création d'une consignation est presque instantanée et ne requiert pas d'accès réseau à quelconque serveur. C'est une opération locale qui pourrait ensuite être [poussée](#push) 
+vers un [dépôt public](#remotes).
 
 Lors du développement, il est important de consigner et de pousser son code de temps en temps afin de ne pas perdre du travail si un bris ou une erreur arrive.
 
@@ -601,9 +621,11 @@ Les consignations permettront des structurer des [branches](#branches).
 
 #### Enregistrer les modifications de l'index {#commit}
 
-À tout moment, il est possible d'enregistrer le contenu de l'[index](#index) vers les [méta-données](#commited). Les consignations vont garder l'heure de l'enregistrement, l'utilisateur courant et un message de l'utilisateur.
+À tout moment, il est possible d'enregistrer le contenu de l'[index](#index) vers les [méta-données](#commited). Les consignations vont garder l'heure de l'enregistrement, l'utilisateur 
+courant et un message de l'utilisateur.
 
-Un message descriptif est nécessaire lors de la consignation et c'est une bonne pratique de prendre un peu de temps afin d'écrire un message décrivant ce qui a été changé et de mettre le numéro du _issue_ affecté. **reformuler**
+Un message descriptif est nécessaire lors de la consignation et c'est une bonne pratique de prendre un peu de temps afin d'écrire un message décrivant ce qui a été changé et de mettre le 
+numéro du _issue_ affecté. **reformuler**
 
 Afin de consigner, la commande `commit` est utilisée. Il est courant d'inclure un message avec le modificateur `-m` ou `--message`.
 
@@ -709,7 +731,8 @@ Date:   Tue Apr 8 17:42:21 2014 -0400
 
 Afin d'annuler les effets d'une consignation, Git permet d'enlever des consignations sans toutefois détruire l'historique avec la commande `revert`.
 
-**N.B.** Si une mauvaise consignation a été crée et n'a pas encore été poussé vers un autre dépôt, il est possible avec la commande [reset](#reset) de supprimer la consignation et son historique en spécifiant un numéro de consignation absolue ou relatif.
+**N.B.** Si une mauvaise consignation a été crée et n'a pas encore été poussé vers un autre dépôt, il est possible avec la commande [reset](#reset) de supprimer la consignation et son 
+historique en spécifiant un numéro de consignation absolue ou relatif.
 
 Les exemples suivants nécessiterons le concept de la [notation abrégée et relative](#id) des consignations.
 
@@ -763,7 +786,8 @@ La consignation générée aura un message générique qui explique qu'est-ce qu
 
 Le modificateur `-e` ou `--edit` permet de modifier le message de consignation en ouvrant l'éditeur de texte par défaut du système. 
 
-Afin de ne pas créer de nouvelle consignation automatiquement avec la commande `revert`, le modificateur `-n` ou `--no-commit` peut être ajoutée. Les changements ne seront alors appliquées qu'à l'index et le répertoire de travail.
+Afin de ne pas créer de nouvelle consignation automatiquement avec la commande `revert`, le modificateur `-n` ou `--no-commit` peut être ajoutée. Les changements ne seront alors 
+appliquées qu'à l'index et le répertoire de travail.
 
 ~~~
 git revert HEAD~ -n
@@ -777,7 +801,8 @@ Git permet d'obtenir n'importe quelle version du projet comme répertoire de tra
 
 Si une version du projet à la consignation e4f324 plait particulièrement à un utilisateur, il peut rétablir cette version sans avoir à utiliser les commit `revert` ou `reset`.
 
-**N.B.** Cette technique sert à obtenir une version précise des fichiers afin de compiler ou examiner le projet. C'est une mauvaise idée de rétablir une vielle version et de continuer le développement à ce stade sans [travailler avec des branches](#branches).
+**N.B.** Cette technique sert à obtenir une version précise des fichiers afin de compiler ou examiner le projet. C'est une mauvaise idée de rétablir une vielle version et de continuer 
+le développement à ce stade sans [travailler avec des branches](#branches).
 
 Cette commande a plusieurs usages. Afin de comprendre pourquoi, la compréhension des [branches](#branches) est nécessaire.
 
@@ -833,7 +858,8 @@ Dans tous les cas, afin de seulement comparer un fichier, le nom peut être ajou
 git diff fichier.txt
 ~~~
 
-Comme avec la commande `log`, les options `--stat`, `summary` et [<span class="glyphicon glyphicon-share"></span>bien d'autres](http://git-scm.com/docs/git-diff) peuvent être ajoutés afin de changer le format des comparaisons.
+Comme avec la commande `log`, les options `--stat`, `summary` et [<span class="glyphicon glyphicon-share"></span>bien d'autres](http://git-scm.com/docs/git-diff) peuvent être ajoutés 
+afin de changer le format des comparaisons.
 
 Le modificateur `--color` peut être ajoutée afin de voir les lignes ajoutées en vert et les lignes enlevées en rouge.
 ~~~
@@ -864,13 +890,16 @@ Nous n'aborderons pas en détails les différents processus de développement av
 
 Le développement par fonctionnalité consiste à créer une nouvelle pour chaque fonctionnalité.
 
-En temps normal dans un processus par branches de fonctionnalités, la branche `master` n'est modifiée que lorsqu'une nouvelle version du programme est officiellement déployée en fusionnant des branches de fonctionnalités.
+En temps normal dans un processus par branches de fonctionnalités, la branche `master` n'est modifiée que lorsqu'une nouvelle version du programme est officiellement déployée en 
+fusionnant des branches de fonctionnalités.
 
 Évidemment, il est courant d'avoir une branche de développement sur laquelle les branches de fonctionnalités sont fusionnées pour tester avant de fusionner vers `master`.
 
-Lorsqu'une nouvelle fonctionnalité est demandée, le développeur responsable devra [créer une branche](#branch) locale et la [pousser](#push) sur le dépôt officiel ou faire une [demande de synchronisation](#pull-request).
+Lorsqu'une nouvelle fonctionnalité est demandée, le développeur responsable devra [créer une branche](#branch) locale et la [pousser](#push) sur le dépôt officiel ou faire une 
+[demande de synchronisation](#pull-request).
 
-Pour plus d'explications sur les différentes méthodes de développement par branches, je vous invite à consulter la [documentation de Atlassian sur les processus de développement avec Git](https://www.atlassian.com/git/workflows) qui est complète tout en restant assez simple.
+Pour plus d'explications sur les différentes méthodes de développement par branches, je vous invite à consulter la 
+[documentation de Atlassian sur les processus de développement avec Git](https://www.atlassian.com/git/workflows) qui est complète tout en restant assez simple.
 
 ---
 
@@ -957,12 +986,14 @@ Dans sa forme la plus simple, un `merge` peut fusionner une branche spécifiée 
 ~~~
 git merge maBrancheSource
 ~~~
-Ce dernier exemple aura pour effet d'ajouter les consignations de la branche source vers la branche courante. Git va décider dans ce cas si une fusion [Fast-Forward](#fast-forward) ou [3-way](#3-way) est appropriée.
+Ce dernier exemple aura pour effet d'ajouter les consignations de la branche source vers la branche courante. Git va décider dans ce cas si une fusion [Fast-Forward](#fast-forward) ou 
+[3-way](#3-way) est appropriée.
 Il est important de faire la distinction entre ces **deux types de fusions** et les problèmes possibles afin d'adapter son processus de développement pour une intégration facile des changements.
 
 **N.B.** La fusion 3-way n'est qu'un type de fusion et pas un algorithmes comme tel.
 
-Afin de voir les différents algorithmes de fusions 3-way et leur particularités, veuillez visiter la [<span class="glyphicon glyphicon-share"></span>documentation officielle de Git](http://git-scm.com/docs/git-merge).
+Afin de voir les différents algorithmes de fusions 3-way et leur particularités, veuillez visiter la 
+[<span class="glyphicon glyphicon-share"></span>documentation officielle de Git](http://git-scm.com/docs/git-merge).
 
 ---
 
@@ -970,7 +1001,8 @@ Afin de voir les différents algorithmes de fusions 3-way et leur particularité
 La fusion **Fast-Forward** s'applique lorsque les changements sont seulement dans la branche source.
 
 C'est à dire que des consignations n'ont été ajoutées que sur une seule branche.
-Git n'a donc qu'à avancer l'historique des consignations en ajoutant celles-ci à la branche de destination sans réellement faire une fusion des deux branches. Le nom **Fast-Forward** vient donc du fait que ce type de fusion n'est en fait qu'une mise à jour de la branche de destination.
+Git n'a donc qu'à avancer l'historique des consignations en ajoutant celles-ci à la branche de destination sans réellement faire une fusion des deux branches. 
+Le nom **Fast-Forward** vient donc du fait que ce type de fusion n'est en fait qu'une mise à jour de la branche de destination.
 
 Dans la cas suivant, un développeur crée une branche à partir de la branche maitre de son dépôt et y ajoute 2 nouvelles consignations.
 
@@ -982,14 +1014,14 @@ Lors que le développeur va fusionner sa branche `branche` dans sa branche `mast
 
 ![Schéma d'une fusion fast-forward après la fusion](img/fastforward.merged.png){.center-block}
 
-Il est maintenant possible de faire une nouvelle branche et de faire une nouvelle fonctionnalité.
+Il est maintenant possible de supprimer la branche `branche` et faire une nouvelle branche pour une nouvelle fonctionnalité.
 
 ---
 
 ##### **3-way merge** {#3-way}
 La fusion **3-way** est nécessaire lorsque la branche de destination a des consignations qui ne sont pas dans la branche source.
 
-C'est le cas souvent lorsque plusieurs développeurs travaillent sur une même projet.
+C'est souvent le cas lorsque plusieurs développeurs travaillent sur une même projet car les développeurs ne peuvent 
 
 Git va créer une nouvelle consignation afin de fusionner les deux branches, mais cela ne requiert généralement pas plus d'interaction utilisateur qu'une fusion de type [fast-forward](#fast-forward).
 
@@ -1005,6 +1037,43 @@ Après cette fusion, seulement la branche `master` contiendra les modifications 
 
 ---
 
+#### Rebaser des branches {#rebase}
+
+La fusion de branches s'avère très facile d'utilisation, mais peu parfois rendre l'historique des modifications un peu ambigüe à cause des consignations crées lors des fusions de type 3-way.
+
+La commande `rebase` de Git permet de _rebaser_ des consignations et changer l'ordre et la manière dont elles ont été enregistrées afin de ne pas avoir de consignation supplémentaire et de garder une file 
+de consignations linéaires.
+
+Par contre, _rebaser_ des consignation de n'avère pas toujours le moyen le plus efficace de fusionner des branches.
+Lorsque des fusions complexes sont à faire, `rebase` peu amener plus de problèmes qu'en résoudre et il faut toujours user de précaution en _rebasant_.
+
+Dans un processus de développement par branche de fonctionnalité, rebase est toutefois assez efficace.
+
+**N.B.** Il est important de ne **jamais rebaser des consignations publiques**, mais seulement des consignations locales afin de ne pas casser l'historique des autres développeurs.
+
+Dans un [situation similaire](#3-way) au cas présenté dans la section de la fusion 3-way, la branche `master` contient une modification de plus que la branche à fusionner.
+
+![Schéma d'une fusion 3-way avant la fusion](img/3way.png){.center-block}
+
+La commande `rebase` s'utilisera dans cette situation de cette manière (la branche courante est `branche`).
+
+~~~
+git rebase master
+~~~
+
+L'effet de `rebase` est ici illustré.
+
+![Schéma rebase](img/rebase.png) {.center-block}
+
+Git va réécrire les consignations faites dans la branche `branche` sur la dernière consignation faite dans `master`.
+
+Notez que la branche `master` n'a pas été encore réellement affectées. 
+Une [fusion de type fast-forward](#fast-forward) doit être affectée à la branche afin d'obtenir le résultat suivant.
+
+![Schéma rebase](img/rebase.merged.png) {.center-block}
+
+---
+
 #### Supprimer une branche locale {#del-local}
 Afin de supprimer une branche qui n'a pas encore été [poussée](#push) vers un dépôt distant, la commande `branch` est utilisée avec le modificateur `-d`.
 ~~~
@@ -1015,7 +1084,7 @@ Git va empêcher de supprimer la branche si des modifications n'ont pas été [f
 
 Afin de forcer la suppression, le modificateur `-D` est utilisé.
 ~~~
-git branche -D brancheASupprimer
+git branch -D brancheASupprimer
 ~~~
 
 ---
@@ -1039,7 +1108,9 @@ Fichier modifiable par l'utilisateur qui contient un ensemble de noms de fichier
 
 Sources disponibles sur [GitHub<span class="fa fa-github"></span>](https://github.com/drfoliberg/Doc-Git)
 
-<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr"><img alt="Licence Creative Commons" style="border-width:0" src="img/by-nc-sa.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr">
+<img alt="Licence Creative Commons" style="border-width:0" src="img/by-nc-sa.png" />
+</a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">
 
 ---
 
