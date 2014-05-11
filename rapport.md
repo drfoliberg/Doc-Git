@@ -2,14 +2,13 @@
 
 ### Par Justin Duplessis
 
-#### Document basé sur la [documentation officielle Git](http://git-scm.com/doc), la [documentation Atlassian](https://www.atlassian.com/fr/git/tutorial/),
- [l'encyclopédie libre Wikipédia](https://wikipedia.org) et les [pages man](https://www.kernel.org/pub/software/scm/git/docs/)
+#### Document basé sur la [documentation officielle Git](http://git-scm.com/doc), la [documentation Atlassian](https://www.atlassian.com/fr/git/tutorial/), [l'encyclopédie libre Wikipédia](https://wikipedia.org) et les [pages man](https://www.kernel.org/pub/software/scm/git/docs/)
 
 #### Publié sous la licence Creative Commons CC BY-NC-SA 4.0
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr">
 <img alt="Licence Creative Commons" style="border-width:0" src="img/by-nc-sa.png" />
 </a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">
-###### Version du document: 0.0.12
+###### Version du document: 1.0.0
 ##### Présenté dans le cadre du rapport de stage hiver 2014 au collège Montmorency
 
 ---
@@ -58,19 +57,11 @@
         * [Fusionner des branches](#merge)
         * [Rebaser des branches](#rebase)
         * [Supprimer une branche locale](#del-local)
-5. [Branches distantes]/(#online)
-    * [Ajouter un dépôt distant]/(#remotes)
-    * [Pousser]/(#push)
-    * [Synchroniser]/(#pull)
-    * [Effacer une branche distante]/(#delete-branch)
-    * [Demande de synchronisation]/(#pull-request)
-6. [Gérer les problèmes dans le code]/(#debug)
-    * [Annotations]/(#blame)
-    * [Conflits]/(#conflicts)
-    * [Recherche dichotomique d'un bogue]/(#bisect)
-7. [Outils supplémentaires]
-    * [Interfaces graphiques]/(#gitk)
-    * [Hébergement Git]/(#github)
+5. [Branches distantes](#online)
+    * [Ajouter un dépôt distant](#remotes)
+    * [Pousser](#push)
+    * [Synchroniser](#pull)
+    * [Effacer une branche distante](#delete-branch)
 
 ---
     
@@ -1085,6 +1076,107 @@ Git va empêcher de supprimer la branche si des modifications n'ont pas été [f
 Afin de forcer la suppression, le modificateur `-D` est utilisé.
 ~~~
 git branch -D brancheASupprimer
+~~~
+
+---
+
+
+### Branches distantes {#online}
+
+Jusqu'à maintenant, toutes les opérations de Git démontraient un comportement affectant le dépôt locale et ne permettaient pas de partager par réseau les modifications.
+
+Avec un seveur qui héberge un dépt Git, il est possible de synchroniser les branches entre plusieurs dépôts. Le dépôt central ou serveur Git centralise les branches et est la plupart du temps le dépôt canonique du projet.
+
+Les développeurs d'un projet envoient donc leurs modifications à ce dépôt et récupèrent celles des autres de la même manière.
+
+Git permet de se communiquer au serveur par les protocoles HTTP, HTTPS, RSYNC ou le protocole Git par tunnel SSH.
+
+**Authenfication**
+
+L'authentification par clé d'identification est possible avec le protocole Git. C'est le protocole le plus utilisé pour travailler avec Git.
+
+Les autres protocoles permettent de s'authentifier par combinaison utilisateur et mot de passe.
+Le protocole HTTPS est le deuxième plus utilisé et sert souvent à cloner un répertoire distant pour mettre en production.
+
+**Consultation**
+
+Afin de consulter les dépôt distants présentement liés au dépôt local, le  modificateur `-v` est ajouté à la commande de base `git remote`.
+
+~~~
+$ git remote -v
+origin	https://github.com/drfoliberg/doc-git (fetch)
+origin	https://github.com/drfoliberg/doc-git (push)
+~~~
+
+---
+
+#### Ajouter un dépôt distant {#remotes}
+
+Lors de [l'initialisation d'un dépôt](#init), aucun autre dépôt n'est accessible pour [pousser](#push) et [synchroniser](#pull).
+
+Pour ajouter un dépôt distant manuellement, la commande `remote add` est utilisée.
+
+Pour ajouter un dépôt distant avec comme identifiant `backup` et comme URL `https://bitbucket.org/drfoliberg/git-doc.git`.
+
+~~~
+git remote add backup https://bitbucket.org/drfoliberg/git-doc.git
+~~~
+
+**N.B.** l'identifiant `backup` n'est pas un nom de projet Git ou de branche, mais plutôt le nom du serveur distant.
+
+**Cloner**
+
+Lorsqu'un utilisateur [clone un dépôt](#clone), le dépôt distant source est automatique ajouté en tant qu' `origin`.
+
+---
+
+#### Pousser {#push}
+
+Lorsque des consignation sont prêtes à pousser, la commande `push` est utilisée.
+
+~~~
+git push origin master
+~~~
+
+Les paramètres `origin` et `master` sont respectivement le nom du dépôt distant et le nom de la branche.
+
+Par défaut, ce sont les paramètres par défaut peuvent être implicites.
+
+Le prochain exemple pousse la branche `master` au dépôt `backup`.
+
+~~~
+git push backup
+~~~
+
+**N.B.** Avant de pousser, il est nécessaire que la branche à pousser du dépôt local ait les dernières modifications de la branche distante. Sinon, il faudra [synchroniser](#pull) le dépôt local avant de pousser.
+
+---
+
+#### Synchroniser {#pull}
+
+Sychroniser permet de [fusionner](#merge) les modifications d'une branche d'un dépôt distant sur la même branche du dépôt local.
+
+La commande git `merge` permet de se connecter et fusionner les dépôts.
+
+Afin de synchroniser le dépôt `origin` avec le dépôt local, la commande `merge` est utilisée de cette manière.
+~~~
+git pull orgin master
+~~~
+
+Comme pour la commande `push`, les noms de branche et de dépôts peuvent être implicites.
+
+---
+
+#### Effacer une branche distante {#delete-branch}
+
+La commande `checkout` ne permet que de modifier le dépôt courant. Si un branche est poussée vers un serveur, il faudrait utiliser la commande `push`.
+
+Le caractère `:` sera ajouté au début du nom de la branche à supprimer.
+
+Ainsi, pour supprimer le branche `vielleBranche` du dépôt `origin`
+
+~~~
+git push origin :vielleBranche
 ~~~
 
 ---

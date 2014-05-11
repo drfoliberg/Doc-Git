@@ -1,6 +1,6 @@
 ﻿<?php
-require_once "lib\Michelf\Markdown.inc.php";
-require_once "lib\Michelf\MarkdownExtra.inc.php";
+require_once "./lib/Michelf/Markdown.inc.php";
+require_once "./lib/Michelf/MarkdownExtra.inc.php";
 
 $path_source = "rapport.md";
 $path_output = "html/";
