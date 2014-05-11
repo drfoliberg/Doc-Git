@@ -1198,7 +1198,7 @@ Fichier modifiable par l'utilisateur qui contient un ensemble de noms de fichier
 
 [<i class="glyphicon glyphicon-envelope"></i>Contacter l'auteur](mailto:duplessisjustin1@gmail.com)
 
-Sources disponibles sur [GitHub<span class="fa fa-github"></span>](https://github.com/drfoliberg/Doc-Git)
+Sources disponibles sur [GitHub<span class="fa fa-github"></span>](https://github.com/jdupl/Doc-Git)
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr">
 <img alt="Licence Creative Commons" style="border-width:0" src="img/by-nc-sa.png" />
